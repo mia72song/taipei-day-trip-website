@@ -3,6 +3,10 @@ app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 
+# 向app註冊api的藍圖
+from api import api
+app.register_blueprint(api, url_prefix="/api")
+
 # Pages
 @app.route("/")
 def index():

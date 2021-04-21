@@ -27,6 +27,8 @@ def get_attractions():
     status_code = 0
     mydb = Mydb()
     pageSize = 12
+
+    # 根據景點名稱的關鍵字篩選資料列表，未給定則不篩選(不執行以下程序)
     if request.args.get("keyword"):
         keyword = request.args.get("keyword")
         page = request.args.get("page", 0)

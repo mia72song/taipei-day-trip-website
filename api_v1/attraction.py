@@ -1,8 +1,8 @@
-from flask import Blueprint, make_response, request, redirect
+from flask import make_response, request, redirect
 import json
 from data.db import Mydb
 
-api = Blueprint("api", __name__)
+from . import api
 
 # 將已取得資料庫數據，整理成dict格式
 def dictFormatter(result):

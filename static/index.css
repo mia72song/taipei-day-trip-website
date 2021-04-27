@@ -1,0 +1,181 @@
+/* header */
+header{
+    background-color:#FFFFFF;
+    height:54px;
+    margin:auto;
+    /*
+    position: fixed;
+    top:0;
+    left:0;
+    z-index: 99;
+    */
+}
+.nav{
+    width:1200px;
+    height:54px;
+    display:flex;
+    margin:0 auto;
+}
+.logo{
+    flex: none;
+    width: 40%;
+    margin: auto;
+    color:#448899;
+}
+.menu{
+    flex: none;
+    width: 60%;
+    margin: auto;
+    text-align: right;
+}
+.menu ul li{
+    display:inline-block;
+    margin-right:18px;
+}
+.menu a{
+    text-decoration: none;
+    color: #666666;
+}
+/* banner */
+.banner{
+    background: linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);
+    height: 320px;
+    color:#F8F8F8;
+    position: relative;
+}
+.banner>img{
+    position:absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+}
+.title{
+    width: 1200px;
+    margin: auto;
+    padding-top: 100px;
+    line-height: 2;
+    /*position:absolute;*/
+    z-index: 2;
+}
+form.search{
+    margin-top: 20px;
+    position: relative;
+    width:50%;
+}
+form.search input{
+    width: 400px;
+    height: 46px;
+    padding: 10px;
+    font-weight: bold;
+    border: 1px solid #FFFFFF;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+form.search button{
+    width: 60px;
+    height: 46px;
+    background: #448899;
+    border: 1px solid #448899;
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+form.search button:hover{
+    color:whitesmoke;
+}
+/* Main */
+main{
+    width: 1200px;
+    margin: 0 auto;
+}
+.box{
+    width: 98%;
+    padding: 20px 0;
+    display: flex;    
+    flex-wrap: wrap;
+    justify-content:center;
+    margin: auto;
+}
+.item{
+    flex:none;
+    width: 23%;
+    border: 1px solid #E8E8E8;
+    border-radius: 5px;
+    margin: 10px;
+}
+.item>img{
+    width: 100%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.content{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 12px;
+}
+#spot_name{
+    width: 100%;
+    margin-bottom: 10px;
+}
+/* Footer */
+footer{
+    background-color: #757575;
+    color: #FFFFFF;
+    text-align: center;
+    height: 104px;
+    line-height: 104px;
+}
+@media (max-width:1200px){
+    .nav{
+        width: 95%;
+    }
+    .title{
+        width: 95%;
+        position:absolute;
+        padding-top: 50px;
+        padding-left: 20px;
+        
+    }
+    form.search input{
+        width: 230px;
+    }
+    main{
+        width: 95%;
+    }
+    .item{
+        width: 45%;
+    }
+}
+@media (max-width:600px){
+    .logo h1{
+        font-size: 24px;
+    }
+    h2{
+        font-size: 24px;
+        line-height: 2;
+    }
+    .banner{
+        height: 280px;
+    }
+    .title{
+        width: 100%;
+    }
+    .banner>img{
+        width: 276px;
+        height: 148px;
+        bottom: 0;
+        right:-50px;
+    }
+    form.search input{
+        width: 200px;
+    }
+    form.search button{
+        width: 46px;
+    }
+    .item{
+        width: 95%;
+    }
+}

@@ -31,8 +31,12 @@ function getDataByPage(page=0){
     if(!ajaxRequested){ // 監測是否正在發出ajax請求，避免重覆發送
         const url=`${window.origin}/api/attractions`;
         ajaxRequested=true;
-        fetch(url).then(response=>{            
-            return response.json()
+        fetch(url).then(response=>{
+            if(response.status===200){
+                return response.json()
+            }else{
+                console.log(response.json())
+            }            
         }).then(resp_data=>{
             const data=resp_data["data"];
             // console.log(data[0]);

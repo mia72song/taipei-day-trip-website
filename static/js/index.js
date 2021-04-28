@@ -1,3 +1,5 @@
+let nextPage=0;
+let ajaxRequested=false;  //監測是否正在發出ajax請求
 function createItemNode(data){
     const item=document.createElement("div");
     item.className="item";
@@ -26,20 +28,27 @@ function createItemNode(data){
     return item
 }
 function getDataByPage(page=0){
-    const url=`${window.origin}/api/attractions`;
-    const databox=document.querySelector(".box");
-    fetch(url).then(
-        response=>response.json()
-    ).then(resp_data=>{
-        const data=resp_data["data"];
-        // console.log(data[0]);
-        for(let d of data){
-            const item=createItemNode(d);
-            databox.appendChild(item);
-        }
-    }).catch(error=>{
-        console.log(error);
-    })
+    if(!ajaxRequested){ // 監測是否正在發出ajax請求，避免重覆發送
+        const url=`${window.origin}/api/attractions`;
+        ajaxRequested=true;
+        fetch(url).then(response=>{            
+            return response.json()
+        }).then(resp_data=>{
+            const data=resp_data["data"];
+            // console.log(data[0]);
+            for(let d of data){
+                const databox=document.querySelector(".box");
+                const item=createItemNode(d);
+                databox.appendChild(item);
+            }
+            nextPage=resp_data["nextPage"];
+            ajaxRequested=false;
+        }).catch(error=>{
+            console.log(error);
+        })
+    }else{
+        console.log("ajax請求正在發送中……請耐心等候")
+    }
 }
 
 function getDataByKeyword(keyword, page=0){
@@ -47,4 +56,18 @@ function getDataByKeyword(keyword, page=0){
 }
 addEventListener("load", ()=>{
     getDataByPage();
+})
+addEventListener("scroll", (eObj)=>{
+    if(nextPage){
+        console.log("Request More Data");
+        console.log(nextPage);
+        console.log(eObj);
+        // getDataByPage(nextPage);
+    }else{
+        const main=document.querySelector("main")
+        const end=document.createElement("h3");
+        end.textContent="-- End --";
+        end.setAttribute("style", "text-align:center;");
+        main.appendChild(end);
+    }
 })

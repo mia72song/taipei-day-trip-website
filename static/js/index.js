@@ -1,5 +1,5 @@
 let nextPage=0;
-let ajaxRequested=false;  //監測是否正在發出ajax請求
+let ajaxRequested=false;  // 監測是否正在發出ajax請求
 function createItemNode(data){
     const item=document.createElement("div");
     item.className="item";
@@ -28,8 +28,8 @@ function createItemNode(data){
     return item
 }
 function getDataByPage(page=0){
-    if(!ajaxRequested){ // 監測是否正在發出ajax請求，避免重覆發送
-        const url=`${window.origin}/api/attractions`;
+    if(!ajaxRequested){  // 監測是否正在發出ajax請求，避免重覆發送
+        const url=`${window.origin}/api/attractions?page=${page}`;
         ajaxRequested=true;
         fetch(url).then(response=>{
             if(response.status===200){
@@ -40,8 +40,8 @@ function getDataByPage(page=0){
         }).then(resp_data=>{
             const data=resp_data["data"];
             // console.log(data[0]);
-            for(let d of data){
-                const databox=document.querySelector(".box");
+            const databox=document.querySelector(".box");
+            for(let d of data){                
                 const item=createItemNode(d);
                 databox.appendChild(item);
             }
@@ -61,14 +61,23 @@ function getDataByKeyword(keyword, page=0){
 addEventListener("load", ()=>{
     getDataByPage();
 })
-addEventListener("scroll", (eObj)=>{
+addEventListener("scroll", ()=>{
     if(nextPage){
-        console.log("Request More Data");
-        console.log(nextPage);
-        console.log(eObj);
-        // getDataByPage(nextPage);
+        const scrollY=window.scrollY // 文檔在垂直方向已滚动的像素值
+        const innerHeight=window.innerHeight; // 螢幕視窗「包括捲軸」的高度
+        /* const scrollHeight=document.documentElement.scrollHeight;
+        文檔的完整高度（包含捲軸之外部分）**會有瀏覽器相容性的問題 */  
+        let scrollHeight=Math.max(
+            document.body.scrollHeight, document.documentElement.scrollHeight,
+            document.body.offsetHeight, document.documentElement.offsetHeight,
+            document.body.clientHeight, document.documentElement.clientHeight
+        );
+        if(scrollY+innerHeight>=scrollHeight-100){
+            console.log("To the Bottom!!");
+            getDataByPage(nextPage);
+        }
     }else{
-        const main=document.querySelector("main")
+        const main=document.querySelector("main");
         const end=document.createElement("h3");
         end.textContent="-- End --";
         end.setAttribute("style", "text-align:center;");

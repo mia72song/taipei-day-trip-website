@@ -3,64 +3,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-<style>
-    #root{
-        width:500px;
-        margin: auto;
-    }
-    footer{
-        height: 60px;
-        background-color: bisque;
-        text-align: center;
-        line-height: 60px;
-    }
-</style>
+    <link rel="stylesheet" href="../static/css/base.css">
+    <link rel="stylesheet" href="../static/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap&subset=chinese-traditional');
+    </style>
+    <script type="text/javascript" src="../static/js/index.js"></script>
 </head>
 <body>
-    <div id="root">
-    <h1>Scroll Event</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi similique aliquid voluptates est magni saepe porro voluptatum alias doloribus. Temporibus saepe sint tempore expedita officiis quo nisi quidem qui placeat.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi similique aliquid voluptates est magni saepe porro voluptatum alias doloribus. Temporibus saepe sint tempore expedita officiis quo nisi quidem qui placeat.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi similique aliquid voluptates est magni saepe porro voluptatum alias doloribus. Temporibus saepe sint tempore expedita officiis quo nisi quidem qui placeat.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi similique aliquid voluptates est magni saepe porro voluptatum alias doloribus. Temporibus saepe sint tempore expedita officiis quo nisi quidem qui placeat.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi similique aliquid voluptates est magni saepe porro voluptatum alias doloribus. Temporibus saepe sint tempore expedita officiis quo nisi quidem qui placeat.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi similique aliquid voluptates est magni saepe porro voluptatum alias doloribus. Temporibus saepe sint tempore expedita officiis quo nisi quidem qui placeat.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi similique aliquid voluptates est magni saepe porro voluptatum alias doloribus. Temporibus saepe sint tempore expedita officiis quo nisi quidem qui placeat.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi similique aliquid voluptates est magni saepe porro voluptatum alias doloribus. Temporibus saepe sint tempore expedita officiis quo nisi quidem qui placeat.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi similique aliquid voluptates est magni saepe porro voluptatum alias doloribus. Temporibus saepe sint tempore expedita officiis quo nisi quidem qui placeat.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi similique aliquid voluptates est magni saepe porro voluptatum alias doloribus. Temporibus saepe sint tempore expedita officiis quo nisi quidem qui placeat.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi similique aliquid voluptates est magni saepe porro voluptatum alias doloribus. Temporibus saepe sint tempore expedita officiis quo nisi quidem qui placeat.</p>
+    <div class="banner">
+        <div class="title">
+            <div class="wrap">
+                <h2>輕鬆享受台北一日悠閒</h2>
+                <p>探索每個角落，體驗城市的深度旅遊行程</p>
+                <form class="search" action="">
+                    <input type="search" placeholder="輸入景點名稱查詢" name="keyword" id="keyword">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+            <img src="../static/images/welcome 1.png" alt="">
+        </div>
     </div>
-    <footer>
-        This is Footer
-    </footer>
-    <script>
-        addEventListener("scroll", ()=>{
-            /*
-            const scrollY=window.scrollY // 文檔在垂直方向已滚动的像素值
-            console.log("文檔在垂直方向已滚动的像素值scrollY:", scrollY);
-            const innerHeight=window.innerHeight; // 螢幕視窗「包括捲軸」的高度
-            console.log("螢幕視窗「包括捲軸」的高度innerHeight:", innerHeight);
-            const scrollHeight=document.documentElement.scrollHeight; // 文檔的完整高度（包含捲軸之外部分）**會有瀏覽器相容性的問題
-            console.log("文檔的完整高度（包含捲軸之外部分）scrollHeight:", scrollHeight);
-            let scrollHeight=Math.max(
-                document.body.scrollHeight, document.documentElement.scrollHeight,
-                document.body.offsetHeight, document.documentElement.offsetHeight,
-                document.body.clientHeight, document.documentElement.clientHeight
-            );
-            */
-            // scrollTop 是「內容」被捲動的距離，也就是內容頂端和捲軸頂端的相對距離
-            // scrollHeight 文檔的完整高度（包含捲軸之外部分）**會有瀏覽器相容性的問題
-            const {scrollTop, scrollHeight, clientHeight}=document.documentElement;
-            console.log({scrollTop, scrollHeight, clientHeight});
-            // clientHeight+scrollTop>=scrollHeight-5
-            if(clientHeight+scrollTop>=scrollHeight-5){
-                console.log("To the Bottom!!");
-            }
-        })
-        const footer=document.querySelector("footer");
-        const footerRect=footer.getBoundingClientRect();
-        console.log("element.getBoundingClientRect()用法：", footerRect);
-    </script>
 </body>
 </html>

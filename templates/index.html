@@ -30,7 +30,7 @@
             <div class="wrap">
                 <h2>輕鬆享受台北一日悠閒</h2>
                 <p>探索每個角落，體驗城市的深度旅遊行程</p>
-                <form class="search" action="">
+                <form class="search" onsubmit="return search(this)">
                     <input type="search" placeholder="輸入景點名稱查詢" name="keyword" id="keyword">
                     <button type="submit"><i class="fa fa-search"></i></button>
                 </form>
@@ -39,9 +39,7 @@
         </div>
     </div>
     <main>
-        <div class="box">
-            <!--api資料載入-->
-        </div>
+        <!--api資料載入-->
     </main>
     <footer>
         COPYRIGHT © 2021 台北一日遊

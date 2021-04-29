@@ -69,6 +69,7 @@ function getDataByPage(page=0){
 function getDataByKeyword(keyword, page=0){
     if(!ajaxRequested){
         const url=`${window.origin}/api/attractions?keyword=${keyword}&page=${page}`;
+        ajaxRequested=true;
         fetch(url).then(response=>{
             if(response.status===200){
                 return response.json()
@@ -77,7 +78,7 @@ function getDataByKeyword(keyword, page=0){
             }
         }).then(resp_data=>{
             const data=resp_data["data"];
-            // console.log(data);   
+            console.log(data);   
             if(page===0){
                 const databox=document.createElement("div");
                 databox.className="box";

@@ -1,0 +1,16 @@
+*{
+    margin:0;
+    box-sizing: border-box;
+}
+body{
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 16px;
+    color: #757575;
+}
+h1{
+    font-size: 1.875em;
+}
+h2{
+    font-size: 1.75em;
+    font-weight: bold;
+}

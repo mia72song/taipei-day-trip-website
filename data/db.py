@@ -62,6 +62,6 @@ class Mydb:
 
 if __name__ == "__main__":
     mydb = Mydb()
-    result = mydb.getDataByKeyword("EFG", 36, 12)
+    result = mydb.getDataByKeyword("公園", 36, 12)
     print(result)
     del mydb

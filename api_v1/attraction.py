@@ -1,8 +1,8 @@
-from flask import Blueprint, make_response, request, redirect
+from flask import make_response, request, redirect
 import json
-from data.db import Mydb
 
-api = Blueprint("api", __name__)
+from data.db import Mydb
+from . import api
 
 # 將已取得資料庫數據，整理成dict格式
 def dictFormatter(result):
@@ -28,7 +28,7 @@ def get_attractions():
     mydb = Mydb()
     pageSize = 12
 
-    # 根據景點名稱的關鍵字篩選資料列表，未給定則不篩選(不執行以下程序)
+    # 根據景點名稱的關鍵字篩選資料列表，未給定則不篩選(即不執行以下程序)
     if request.args.get("keyword"):
         keyword = request.args.get("keyword")
         page = request.args.get("page", 0)

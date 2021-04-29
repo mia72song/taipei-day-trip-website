@@ -9,6 +9,7 @@ function createItemNode(data){
 
     const img=document.createElement("img");
     img.src=data["images"][0];
+    img.setAttribute("alt", data["name"]);
     item.appendChild(img);
     
     const content=document.createElement("div");

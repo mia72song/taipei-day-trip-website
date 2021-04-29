@@ -78,7 +78,7 @@ function getDataByKeyword(keyword, page=0){
             }
         }).then(resp_data=>{
             const data=resp_data["data"];
-            console.log(data);   
+            // console.log(data);   
             if(page===0){
                 const databox=document.createElement("div");
                 databox.className="box";

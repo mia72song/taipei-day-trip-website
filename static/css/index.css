@@ -42,14 +42,15 @@ header{
     height: 320px;
     color:#F8F8F8;
     overflow: hidden;
+    margin:54px auto 0 auto;
 }
 .title{
     width:1200px;
     min-width:320px;
     height: inherit;
-    min-height:280px;
-    margin:54px auto 0 auto;
+    min-height:280px;    
     position: relative;
+    margin: auto;
 }
 .title>img{
     position:absolute;
@@ -177,7 +178,7 @@ footer{
         right:-30%;
     }
     .wrap{
-        padding-top: 30px;
+        padding-top: 50px;
     }
     .search input{
         width: 230px;

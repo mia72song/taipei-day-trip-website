@@ -134,13 +134,11 @@ addEventListener("scroll", ()=>{
 
 // 輸入關鍵字搜尋功能
 function search(obj){ 
-    const keywordNode=obj.keyword; 
-    keyword=keywordNode.value;
+    keyword=obj.keyword.value;
     if(keyword){        
         // 初始化景點列表及nextPage
-        const main=document.querySelector("main");
         const databox=document.querySelector(".box");
-        main.removeChild(databox);
+        document.querySelector("main").removeChild(databox);
         nextPage=0;
         
         getDataByKeyword(keyword);

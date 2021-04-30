@@ -29,6 +29,7 @@ main>div{
   flex:none;
   width:600px;
   line-height:2;
+  margin: auto 10px;
 }
 h3{
   font-size:1.5em;
@@ -89,33 +90,25 @@ form>button{
     }
     main{
         width: 100%;
-        margin:54px 0;
     }
     .ietm{
         width:100%;
-        margin:0;
     }
     .imgs_div{
         width:99%;
+        min-width: 466px;
         height: 350px;
-        margin: 0;
-        position: relative;
     }
     .imgs_div img{
         width: inherit;
-        min-width: 466px;
         height: inherit;
-        position: absolute;
-        left: -53px;
-        right: -53px;
-        top: 0px; 
-        border-radius: 0;
+        display:block;
+        margin:auto;
     }
     .info{
         width:95%;
     }
     .description{
-        width: 95%;
+        width: 90%;
     }
-
 }

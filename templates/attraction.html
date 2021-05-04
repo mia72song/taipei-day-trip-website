@@ -5,6 +5,98 @@
     <title>Attraction Info</title>
 <link rel="stylesheet" href="../static/css/base.css">
 <link rel="stylesheet" href="../static/css/attraction.css">
+<script type="text/javascript" src="../static/js/attraction.js"></script>
+<script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+    //Main組件
+    class Main extends React.Component{  
+        state={}
+        componentDidMount(){
+            const p=getDataById();
+            p.then(data=>{
+                this.setState(data["data"]);
+            }).catch(error=>{
+                console.log(error);
+            })
+        }
+        render(){
+            // console.log(this.state);
+            return(
+                <div>
+                    <div class="item">
+                        <Images images={this.state.images}/>
+                        <div class="info">
+                            <div class="title">
+                                <h2>{this.state.name}</h2>
+                                <p>{this.state.category} at {this.state.mrt}</p>
+                            </div>
+                            <div class="wrap">
+                                <Booking images={this.state.id}/>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="description">
+                        <p>{this.state.description}</p>
+                        <br/>
+                        <h4>景點地址：</h4>
+                        <p>{this.state.address}</p>
+                        <br/>
+                        <h4>交通方式：</h4>
+                        <p>{this.state.transport}</p>
+                    </div>
+                </div>
+            )
+        }
+    }
+    // 輪播圖
+    class Images extends React.Component{
+        state={
+            index:0
+        }
+        render(){
+            const images_arr=this.props.images;
+            console.log(images_arr);
+            return(
+                <div class="imgs_div">
+                    <img src=""/>
+                </div>
+            )
+        }
+    }
+    // 預訂行程表單
+    class Booking extends React.Component{
+        state={
+            "am":2000,
+            "pm":2500
+        }
+        render(){
+            return(
+                <div class="booking">
+                    <h4>訂購導覽行程</h4>
+                    <p>以此景點為中心的一日行程，帶您探索城市角落故事</p>
+                    <form action="#" method="post">
+                        <label for="">選擇日期：</label>
+                        <input type="date" name="date" id="date" value="2021-05-01"/><br/>
+                        <label for="">選擇時間：</label>
+                        <span id="period">
+                            <input type="radio" name="period_item" id="am" value="am" checked/><label for="am">上半天</label>
+                            <input type="radio" name="period_item" id="pm" value="pm"/><label for="pm">下半天</label>
+                        </span><br/>                        
+                        <label for="">導覽費用：</label>新台幣<span>{this.state.am}</span>元<br/>
+                        <button type="submit">開始預訂行程</button>
+                    </form>
+                </div>
+            )
+        }
+    }
+
+    addEventListener("load", ()=>{
+        ReactDOM.render(<Main/>, document.querySelector("main"));
+    })
+</script>
 </head>
 <body>
     <header>
@@ -21,42 +113,7 @@
         </div>
     </header>
     <main>
-        <div class="item">
-            <div class="imgs_div">
-                <img src="../static/images/books_apple_hires.jpg" alt="" width="540px">
-            </div>
-            <div class="info">
-                <h3>平安鐘</h3>
-                <p>公共藝術 at 忠孝復興</p>
-                <div class="wrap">
-                    <div class="booking">
-                        <h4>訂購導覽行程</h4>
-                        <p>以此景點為中心的一日行程，帶您探索城市角落故事</p>
-                        <form action="#" method="post">
-                            <label for="">選擇日期：</label>
-                            <input type="date" name="date" id="date" value="2021-05-01"><br/>
-                            <label for="">選擇時間：</label>
-                            <input type="radio" name="date" id="date" value="am" checked><span>上半天</span>
-                            <input type="radio" name="date" id="date" value="pm"><span>下半天</span><br/>
-                            <label for="">導覽費用：</label><span>新台幣2000元</span><br/>
-                            <button type="submit">開始預訂行程</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <hr />
-        <div class="description">
-            <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias consequuntur qui adipisci fugit, repellendus ut minus voluptatem ex inventore voluptates nisi iste commodi officiis temporibus, fuga distinctio doloribus voluptate cumque.
-            </p>
-          <br/>
-            <h4>景點地址：</h4>
-            <p>address</p>
-          <br/>
-            <h4>交通方式：</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deleniti sed accusamus incidunt vel autem, aut eius magnam omnis dolores qui et pariatur itaque reprehenderit voluptatibus sapiente necessitatibus nobis vitae distinctio!</p>
-        </div>
+        <!--由React組件渲染-->
     </main>
     <footer>
         COPYRIGHT © 2021 台北一日遊

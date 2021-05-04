@@ -3,9 +3,6 @@ main{
   width: 1200px;
   overflow: hidden;
 }
-main>div{
-  padding:30px 0;
-}
 .item{
   display:flex;
   margin:0 auto;
@@ -13,6 +10,7 @@ main>div{
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: center;
+  padding:30px 0;
 }
 .imgs_div{
   flex:none;
@@ -61,10 +59,12 @@ form>button{
   border-radius: 5px;
   margin-top:10px;
 }
+
 .description{
-  margin:0 auto;
+  margin:10px auto;
   width: 98%;
   line-height:1.5;
+  padding:30px 0;
 }
 
 @media (max-width:1200px){

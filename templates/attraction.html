@@ -86,11 +86,11 @@
                         <input type="date" name="date" id="date" value="2021-01-01"/><br/>
                         <label for="">選擇時段：</label> 
                         <span class="radio_container">
-                            <input type="radio" name="period" id="am" checked/>
+                            <input type="radio" name="period" id="am" checked={this.state.checked==="am"} onChange={this.handelCheck}/>
                             <label for="am">上半天</label>
                         </span>
                         <span class="radio_container">
-                            <input type="radio" name="period" id="pm"/>
+                            <input type="radio" name="period" id="pm" checked={this.state.checked==="pm"} onChange={this.handelCheck}/>
                             <label for="pm">下半天</label>
                         </span><br/>                        
                         <label for="">導覽費用：</label>新台幣<span>{price[checked]}</span>元<br/>
@@ -98,6 +98,12 @@
                     </form>
                 </div>
             )
+        }
+        handelCheck=(eObj)=>{
+            // console.log(eObj.target.id);
+            this.setState({
+                checked:eObj.target.id
+            })
         }
     }
 

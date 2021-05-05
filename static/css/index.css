@@ -14,7 +14,7 @@
     position: relative;
     margin: auto;
 }
-.title>img{
+.title img{
     position:absolute;
     bottom: 0;
     right:-10%;
@@ -48,7 +48,7 @@
   top:0;
   left:0;
 }
-form.search button{
+.search button{
   width: 60px;
   height: 46px;
   background: #448899;
@@ -73,6 +73,7 @@ main{
     flex-wrap: wrap;
     justify-content:center;
     margin: auto;
+    min-height: 300px;
 }
 .item{
     flex:none;

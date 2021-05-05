@@ -17,6 +17,10 @@ h2{
 button{
     cursor: pointer;
 }
+a{
+    text-decoration: none;
+    cursor: pointer;
+}
 /* header */
 header{
     background-color:#FFFFFF;
@@ -40,6 +44,8 @@ header{
     flex: none;
     width: 45%;
     margin: auto;
+}
+.logo>a{
     color:#448899;
 }
 .menu{
@@ -53,7 +59,6 @@ header{
     margin-right:10px;
 }
 .menu a{
-    text-decoration: none;
     color: #666666;
 }
 /* Footer */

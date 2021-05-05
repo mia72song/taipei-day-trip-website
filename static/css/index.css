@@ -81,6 +81,7 @@ main{
     border: 1px solid #E8E8E8;
     border-radius: 5px;
     margin: 10px;
+    cursor:pointer;
 }
 .item>img{
     width: 100%;
@@ -141,7 +142,7 @@ main{
     .search input{
         width: 230px;
     }
-    form.search button{
+    .search button{
         left:230px;
     }
     main{

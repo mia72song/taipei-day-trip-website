@@ -55,7 +55,7 @@
             // console.log(spots);
             let box_content;
             if(spots.length>0){
-                box_content=spots.map(spot=><Item key={spot.id} name={spot.name} mrt={spot.mrt} category={spot.category} img_link={spot.images[0]}/>)
+                box_content=spots.map(spot=><Item key={spot.id} id={spot.id} name={spot.name} mrt={spot.mrt} category={spot.category} img_link={spot.images[0]}/>)
             }else{
                 box_content="查無資料"
             }
@@ -108,7 +108,7 @@
         render(){
             // console.log(this.props);
             return(
-                <div class="item" key={this.props.key}>
+                <div class="item" onClick={this.handleClick(this.props.id)}>
                     <img src={this.props.img_link} alt={this.props.name}/>
                     <div class="content">
                         <h4 id="spot_name">{this.props.name}</h4>
@@ -117,6 +117,12 @@
                     </div>
                 </div>
             )
+        }
+        handleClick=(id)=>{
+            return ()=>{
+                console.log(id);
+                location.href=`${window.origin}/attraction/${id}`
+            }
         }
     }
     // 輸入關鍵字搜尋

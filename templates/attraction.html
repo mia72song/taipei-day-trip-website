@@ -69,23 +69,31 @@
     // 預訂行程表單
     class Booking extends React.Component{
         state={
-            "am":2000,
-            "pm":2500
+            checked:"am",
+            price:{
+                am:2000,
+                pm:2500
+            }
         }
         render(){
+            const {checked, price}=this.state;
             return(
                 <div class="booking">
                     <h4>訂購導覽行程</h4>
                     <p>以此景點為中心的一日行程，帶您探索城市角落故事</p>
                     <form action="#" method="post">
                         <label for="">選擇日期：</label>
-                        <input type="date" name="date" id="date" value="2021-05-01"/><br/>
-                        <label for="">選擇時間：</label>
-                        <span id="period">
-                            <input type="radio" name="period_item" id="am" value="am" checked/><label for="am">上半天</label>
-                            <input type="radio" name="period_item" id="pm" value="pm"/><label for="pm">下半天</label>
+                        <input type="date" name="date" id="date" value="2021-01-01"/><br/>
+                        <label for="">選擇時段：</label> 
+                        <span class="radio_container">
+                            <input type="radio" name="period" id="am" checked/>
+                            <label for="am">上半天</label>
+                        </span>
+                        <span class="radio_container">
+                            <input type="radio" name="period" id="pm"/>
+                            <label for="pm">下半天</label>
                         </span><br/>                        
-                        <label for="">導覽費用：</label>新台幣<span>{this.state.am}</span>元<br/>
+                        <label for="">導覽費用：</label>新台幣<span>{price[checked]}</span>元<br/>
                         <button type="submit">開始預訂行程</button>
                     </form>
                 </div>

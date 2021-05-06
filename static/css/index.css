@@ -1,3 +1,5 @@
+@import "base.css";
+
 /* banner */
 .banner{
     background: linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);

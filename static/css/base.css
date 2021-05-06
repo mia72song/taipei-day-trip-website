@@ -9,6 +9,7 @@ body{
 }
 h1{
     font-size: 1.875em;
+    color:#448899
 }
 h2{
     font-size: 1.75em;
@@ -44,9 +45,6 @@ header{
     flex: none;
     width: 45%;
     margin: auto;
-}
-.logo>a{
-    color:#448899;
 }
 .menu{
     flex: none;

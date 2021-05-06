@@ -120,7 +120,7 @@
                     <p>以此景點為中心的一日行程，帶您探索城市角落故事</p>
                     <form action="#" method="post">
                         <label for="">選擇日期：</label>
-                        <input type="date" name="date" id="date" value={this.state.date}/><br/>
+                        <input type="date" name="date" id="date" value={this.state.date} onChange={this.dateChange}/><br/>
                         <label for="">選擇時段：</label> 
                         <span class="radio_container">
                             <input type="radio" name="period" id="am" checked={this.state.checked==="am"} onChange={this.handelCheck}/>
@@ -135,6 +135,10 @@
                     </form>
                 </div>
             )
+        }
+        dateChange=(eObj)=>{
+            // console.log(eObj.target.value);
+            this.setState({date:eObj.target.value})
         }
         handelCheck=(eObj)=>{
             // console.log(eObj.target.id);

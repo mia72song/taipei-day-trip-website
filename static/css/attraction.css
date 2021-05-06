@@ -51,7 +51,7 @@ main{
   width:100%;
   position: absolute;
   bottom: 0;
-  z-index: 99;
+  z-index: 1;
 }
 .nav_control>input{
   margin:10px 5px;

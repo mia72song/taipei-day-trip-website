@@ -25,20 +25,20 @@
             // console.log(this.state);
             return(
                 <div>
-                    <div class="item">
+                    <div className="item">
                         <Images images={this.state.images}/>
-                        <div class="info">
-                            <div class="title">
+                        <div className="info">
+                            <div className="title">
                                 <h2>{this.state.name}</h2>
                                 <p>{this.state.category} at {this.state.mrt}</p>
                             </div>
-                            <div class="wrap">
+                            <div className="wrap">
                                 <Booking images={this.state.id}/>
                             </div>
                         </div>
                     </div>
                     <hr />
-                    <div class="description">
+                    <div className="description">
                         <p>{this.state.description}</p>
                         <br/>
                         <h4>景點地址：</h4>
@@ -71,13 +71,13 @@
                 }
             }
             return(
-                <div class="imgs_div">
+                <div className="imgs_div">
                     <img id="image" src={src}/>
-                    <div class="arrows">
+                    <div className="arrows">
                         <img id="leftArrow" src="../static/images/btn_leftArrow.png" onClick={this.handelClick(-1)}/>
                         <img id="rightArrow" src="../static/images/btn_rightArrow.png" onClick={this.handelClick(1)}/>
                     </div>
-                    <div class="nav_control">
+                    <div className="nav_control">
                         {radio_list}
                     </div>
                 </div>
@@ -115,18 +115,18 @@
         render(){
             const {checked, price}=this.state;
             return(
-                <div class="booking">
+                <div className="booking">
                     <h4>訂購導覽行程</h4>
                     <p>以此景點為中心的一日行程，帶您探索城市角落故事</p>
                     <form action="#" method="post">
                         <label for="">選擇日期：</label>
                         <input type="date" name="date" id="date" value={this.state.date} onChange={this.dateChange}/><br/>
                         <label for="">選擇時段：</label> 
-                        <span class="radio_container">
+                        <span className="radio_container">
                             <input type="radio" name="period" id="am" checked={this.state.checked==="am"} onChange={this.handelCheck}/>
                             <label for="am">上半天</label>
                         </span>
-                        <span class="radio_container">
+                        <span className="radio_container">
                             <input type="radio" name="period" id="pm" checked={this.state.checked==="pm"} onChange={this.handelCheck}/>
                             <label for="pm">下半天</label>
                         </span><br/>                        

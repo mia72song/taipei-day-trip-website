@@ -60,7 +60,7 @@
                 box_content="查無資料"
             }
             return(
-                <div class="box">
+                <div className="box">
                     {box_content}
                 </div>
             )         
@@ -108,9 +108,9 @@
         render(){
             // console.log(this.props);
             return(
-                <div class="item" onClick={this.handleClick(this.props.id)}>
+                <div className="item" onClick={this.handleClick(this.props.id)}>
                     <img src={this.props.img_link} alt={this.props.name}/>
-                    <div class="content">
+                    <div className="content">
                         <h4 id="spot_name">{this.props.name}</h4>
                         <span id="mrt">{this.props.mrt}</span>
                         <span id="category">{this.props.category}</span>
@@ -129,9 +129,9 @@
     class Search extends React.Component{
         render(){
             return(
-                <div class="search">
+                <div className="search">
                     <input type="text" placeholder="輸入景點名稱查詢" name="keyword" id="keyword" ref={c=>this.inputElement=c}/>
-                    <button onClick={this.search}><i class="fa fa-search"></i></button>
+                    <button onClick={this.search}><i className="fa fa-search"></i></button>
                 </div>
             )
         }

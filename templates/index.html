@@ -1,167 +1,150 @@
-<!DOCTYPE html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Home Page</title>
-<link rel="stylesheet" type="text/css" href="../static/css/index.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script type="text/javascript" src="../static/js/index.js"></script>
-<script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pubsub-js/1.9.3/pubsub.min.js" integrity="sha512-ASNLdxh5Knd0ESqUQE2hvUbXxOmu0y27vVVibROAKRomo+R6ocykvh0m8tE9qMEfmeVbEyNL1M6FvvyRKyZIoQ==" crossorigin="anonymous"></script>
-<script type="text/babel">
-    class Databox extends React.Component{
-        state={
-            keyword:"",
-            nextPage:null,
-            data:[],
-        }
-        componentDidMount(){
-            // 初始化首頁的景點資訊
-            let p=getDataByPage(0);
-            if(p){
-                p.then(data=>{
-                    //console.log(data);
-                    this.setState({
-                        nextPage:data["nextPage"],
-                        data:data["data"]
-                    })
-                })
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href={{ url_for("static", filename="css/index.css") }}>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src={{ url_for("static", filename="js/index.js") }}></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pubsub-js/1.9.3/pubsub.min.js" integrity="sha512-ASNLdxh5Knd0ESqUQE2hvUbXxOmu0y27vVVibROAKRomo+R6ocykvh0m8tE9qMEfmeVbEyNL1M6FvvyRKyZIoQ==" crossorigin="anonymous"></script>
+    <script type="text/babel">
+        class Databox extends React.Component{
+            state={
+                keyword:"",
+                nextPage:null,
+                data:[],
             }
-            // 註冊scroll事件
-            window.addEventListener("scroll", this.handleScroll, true);
-            // 訂閱KEYWORD消息
-            this.token=PubSub.subscribe("KEYWORD", (_, keyword)=>{
-                //console.log("Databox被通知：", keyword);
-                let p=getDataByKeyword(keyword, 0);
+            componentDidMount(){
+                // 初始化首頁的景點資訊
+                let p=getDataByPage(0);
                 if(p){
                     p.then(data=>{
+                        //console.log(data);
                         this.setState({
-                            keyword:keyword,
                             nextPage:data["nextPage"],
                             data:data["data"]
                         })
                     })
                 }
-            })
-        }
-        render(){
-            const spots=this.state.data;
-            // console.log(spots);
-            let box_content;
-            if(spots.length>0){
-                box_content=spots.map(spot=><Item key={spot.id} id={spot.id} name={spot.name} mrt={spot.mrt} category={spot.category} img_link={spot.images[0]}/>)
-            }else{
-                box_content="查無資料"
-            }
-            return(
-                <div className="box">
-                    {box_content}
-                </div>
-            )         
-        }
-        componentWillUnmount(){
-            // 取消scroll事件的監聽
-            window.removeEventListener("scroll", this.handleScroll, true);
-            // 取消KEYWORD消息訂閱
-            PubSub.unsubscribe(this.token);
-        }
-        handleScroll=()=>{
-            // console.log(this.state.nextPage);
-            let p;
-            if(this.state.nextPage){
-                const scrollY=window.scrollY; // 文檔在垂直方向已滚动的像素值
-                const innerHeight=window.innerHeight; // 螢幕視窗「包括捲軸」的高度
-                /* const scrollHeight=document.documentElement.scrollHeight; 文檔的完整高度（包含捲軸之外部分）
-                scrollHeight會有瀏覽器相容性的問題 */  
-                let scrollHeight=Math.max(
-                    document.body.scrollHeight, document.documentElement.scrollHeight,
-                    document.body.offsetHeight, document.documentElement.offsetHeight,
-                    document.body.clientHeight, document.documentElement.clientHeight
-                );
-                if(scrollY+innerHeight>=scrollHeight-100){
-                    // console.log("Touch the Bottom!!");
-                    if(this.state.keyword){
-                        p=getDataByKeyword(this.state.keyword, this.state.nextPage);
-                    }else{
-                        p=getDataByPage(this.state.nextPage);
-                    }                    
+                // 註冊scroll事件
+                window.addEventListener("scroll", this.handleScroll, true);
+                // 訂閱KEYWORD消息
+                this.token=PubSub.subscribe("KEYWORD", (_, keyword)=>{
+                    //console.log("Databox被通知：", keyword);
+                    let p=getDataByKeyword(keyword, 0);
                     if(p){
-                        const currentSpots=this.state.data;
                         p.then(data=>{
                             this.setState({
+                                keyword:keyword,
                                 nextPage:data["nextPage"],
-                                data:[...currentSpots, ...data["data"]]
+                                data:data["data"]
                             })
                         })
+                    }
+                })
+            }
+            render(){
+                const spots=this.state.data;
+                // console.log(spots);
+                let box_content;
+                if(spots.length>0){
+                    box_content=spots.map(spot=><Item key={spot.id} id={spot.id} name={spot.name} mrt={spot.mrt} category={spot.category} img_link={spot.images[0]}/>)
+                }else{
+                    box_content="查無資料"
+                }
+                return(
+                    <div className="box">
+                        {box_content}
+                    </div>
+                )         
+            }
+            componentWillUnmount(){
+                // 取消scroll事件的監聽
+                window.removeEventListener("scroll", this.handleScroll, true);
+                // 取消KEYWORD消息訂閱
+                PubSub.unsubscribe(this.token);
+            }
+            handleScroll=()=>{
+                // console.log(this.state.nextPage);
+                let p;
+                if(this.state.nextPage){
+                    const scrollY=window.scrollY; // 文檔在垂直方向已滚动的像素值
+                    const innerHeight=window.innerHeight; // 螢幕視窗「包括捲軸」的高度
+                    /* const scrollHeight=document.documentElement.scrollHeight; 文檔的完整高度（包含捲軸之外部分）
+                    scrollHeight會有瀏覽器相容性的問題 */  
+                    let scrollHeight=Math.max(
+                        document.body.scrollHeight, document.documentElement.scrollHeight,
+                        document.body.offsetHeight, document.documentElement.offsetHeight,
+                        document.body.clientHeight, document.documentElement.clientHeight
+                    );
+                    if(scrollY+innerHeight>=scrollHeight-100){
+                        // console.log("Touch the Bottom!!");
+                        if(this.state.keyword){
+                            p=getDataByKeyword(this.state.keyword, this.state.nextPage);
+                        }else{
+                            p=getDataByPage(this.state.nextPage);
+                        }                    
+                        if(p){
+                            const currentSpots=this.state.data;
+                            p.then(data=>{
+                                this.setState({
+                                    nextPage:data["nextPage"],
+                                    data:[...currentSpots, ...data["data"]]
+                                })
+                            })
+                        }
                     }
                 }
             }
         }
-    }
-    class Item extends React.Component{
-        render(){
-            // console.log(this.props);
-            return(
-                <div className="item" onClick={this.handleClick(this.props.id)}>
-                    <img src={this.props.img_link} alt={this.props.name}/>
-                    <div className="content">
-                        <h4 id="spot_name">{this.props.name}</h4>
-                        <span id="mrt">{this.props.mrt}</span>
-                        <span id="category">{this.props.category}</span>
+        class Item extends React.Component{
+            render(){
+                // console.log(this.props);
+                return(
+                    <div className="item" onClick={this.handleClick(this.props.id)}>
+                        <img src={this.props.img_link} alt={this.props.name}/>
+                        <div className="content">
+                            <h4 id="spot_name">{this.props.name}</h4>
+                            <span id="mrt">{this.props.mrt}</span>
+                            <span id="category">{this.props.category}</span>
+                        </div>
                     </div>
-                </div>
-            )
-        }
-        handleClick=(id)=>{
-            return ()=>{
-                console.log(id);
-                location.href=`${window.origin}/attraction/${id}`
+                )
+            }
+            handleClick=(id)=>{
+                return ()=>{
+                    console.log(id);
+                    location.href=`${window.origin}/attraction/${id}`
+                }
             }
         }
-    }
-    // 輸入關鍵字搜尋
-    class Search extends React.Component{
-        render(){
-            return(
-                <div className="search">
-                    <input type="text" placeholder="輸入景點名稱查詢" name="keyword" id="keyword" ref={c=>this.inputElement=c}/>
-                    <button onClick={this.search}><i className="fa fa-search"></i></button>
-                </div>
-            )
-        }
-        search=()=>{
-            const keyword=this.inputElement.value;
-            if(keyword!==""){
-                // console.log(keyword);
-                PubSub.publish('KEYWORD', keyword);
-            }else{
-                return
+        // 輸入關鍵字搜尋
+        class Search extends React.Component{
+            render(){
+                return(
+                    <div className="search">
+                        <input type="text" placeholder="輸入景點名稱查詢" name="keyword" id="keyword" ref={c=>this.inputElement=c}/>
+                        <button onClick={this.search}><i className="fa fa-search"></i></button>
+                    </div>
+                )
+            }
+            search=()=>{
+                const keyword=this.inputElement.value;
+                if(keyword!==""){
+                    // console.log(keyword);
+                    PubSub.publish('KEYWORD', keyword);
+                }else{
+                    return
+                }
             }
         }
-    }
-    
-    addEventListener("load", ()=>{
-        ReactDOM.render(<Search/>, document.querySelector("#search_form"));
-        ReactDOM.render(<Databox/>, document.querySelector("main"));
-    })
-</script>
-</head>
-<body>
-    <header>
-        <div class="nav">
-            <div class="logo">
-                <a href="/"><h1>台北一日遊</h1></a>
-            </div>
-            <div class="menu">
-                <ul>
-                    <li><a href="#">預定行程</a></li>
-                    <li><a href="#">登入/註冊</a></li>
-                </ul>
-            </div>
-        </div>
-    </header>
+        
+        addEventListener("load", ()=>{
+            ReactDOM.render(<Search/>, document.querySelector("#search_form"));
+            ReactDOM.render(<Databox/>, document.querySelector("main"));
+        })
+    </script>
+{% endblock %}
+{% block content %}
     <div class="banner">
         <div class="title">
             <div class="wrap">
@@ -177,8 +160,4 @@
     <main>
         <!--由React組件Databox渲染-->
     </main>
-    <footer>
-        COPYRIGHT © 2021 台北一日遊
-    </footer>
-</body>
-</html>
+{% endblock %}

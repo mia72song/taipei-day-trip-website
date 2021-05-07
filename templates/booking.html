@@ -1,24 +1,10 @@
-<!DOCTYPE html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Booking Page</title>
-<link rel="stylesheet" type="text/css" href="../static/css/booking.css">
-</head>
-<body>
-    <header>
-        <div class="nav">
-            <div class="logo">
-                <h1>台北一日遊</h1>
-            </div>
-            <div class="menu">
-                <ul>
-                    <li><a href="#">預定行程</a></li>
-                    <li><a href="#">登入/註冊</a></li>
-                </ul>
-            </div>
-        </div>
-    </header>
+{% extends "base.html" %}
+{% block title %}Booking Page{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href={{ url_for("static", filename="css/booking.css") }}>
+{% endblock %}
+{% block content %}
     <main>
         <div>
             <h3>你好，<span id="username">USER</span>，待預訂的行程如下：</h3>
@@ -77,8 +63,4 @@
             </div>
         </div>
     </main>
-    <footer>
-        COPYRIGHT © 2021 台北一日遊
-    </footer>
-</body>
-</html>
+{% endblock %}

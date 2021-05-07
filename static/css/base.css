@@ -69,3 +69,19 @@ footer{
     height: 104px;
     line-height: 104px;
 }
+@media (max-width:1200px){
+    .nav{
+        width:95%;
+    }
+}
+@media (max-width:600px){
+    body{
+        font-size: 15px;
+    }
+    h1{
+        font-size: 1.8em;
+    }
+    .menu ul li{
+        margin-right:5px;
+    }
+}

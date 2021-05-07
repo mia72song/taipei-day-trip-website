@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href={{ url_for("static", filename="css/base.css") }}>
+    <!--Load React and React DOM-->
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <!-- Load Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    {% endblock %}
+</head>
+<body>
+    <header>
+        <div class="nav">
+            <div class="logo">
+                <a href="/"><h1>台北一日遊</h1></a>
+            </div>
+            <div class="menu">
+                <ul>
+                    <li><a href="#">預定行程</a></li>
+                    <li><a href="#">登入/註冊</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    {% block content %}
+    
+    {% endblock %}
+    <footer>
+        COPYRIGHT © 2021 台北一日遊
+    </footer>
+</body>
+</html>

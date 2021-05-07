@@ -1,10 +1,177 @@
 <!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>Attraction Info</title>
+<link rel="stylesheet" type="text/css" href="../static/css/attraction.css">
+<script type="text/javascript" src="../static/js/attraction.js"></script>
+<script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+    //Main組件：attraction主畫面
+    class Main extends React.Component{  
+        state={}
+        componentDidMount(){
+            const p=getDataById();
+            p.then(data=>{
+                this.setState(data["data"]);
+            }).catch(error=>{
+                console.log(error);
+            })
+        }
+        render(){
+            // console.log(this.state);
+            return(
+                <div>
+                    <div className="item">
+                        <Images images={this.state.images}/>
+                        <div className="info">
+                            <div className="title">
+                                <h2>{this.state.name}</h2>
+                                <p>{this.state.category} at {this.state.mrt}</p>
+                            </div>
+                            <div className="wrap">
+                                <Booking id={this.state.id}/>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div className="description">
+                        <p>{this.state.description}</p>
+                        <br/>
+                        <h4>景點地址：</h4>
+                        <p>{this.state.address}</p>
+                        <br/>
+                        <h4>交通方式：</h4>
+                        <p>{this.state.transport}</p>
+                    </div>
+                </div>
+            )
+        }
+    }
+    // 輪播圖
+    class Images extends React.Component{
+        state={
+            index:0,
+        }
+        render(){
+            const images_arr=this.props.images;
+            let src;
+            let radio_list=[];
+            if(images_arr){
+                src=images_arr[this.state.index];
+                // console.log(images_arr.length-1);
+                for(let i=0; i<images_arr.length; i++){
+                    let id="img"+i
+                    radio_list.push(
+                        <input type="radio" name="img_index" id={id} checked={this.state.index===i} onChange={this.handelCheck}/>
+                    )
+                }
+            }
+            return(
+                <div className="imgs_div">
+                    <img id="image" src={src}/>
+                    <div className="arrows">
+                        <img id="leftArrow" src="../static/images/btn_leftArrow.png" onClick={this.handelClick(-1)}/>
+                        <img id="rightArrow" src="../static/images/btn_rightArrow.png" onClick={this.handelClick(1)}/>
+                    </div>
+                    <div className="nav_control">
+                        {radio_list}
+                    </div>
+                </div>
+            )
+        }
+        handelCheck=(eObj)=>{
+            let change_index=eObj.target.id.split("img")[1];
+            this.setState({index:parseInt(change_index)});
+        }
+        handelClick=(increment)=>{
+            const images_arr=this.props.images;
+            let current_index=this.state.index;
+            return ()=>{
+                const max_index=images_arr.length-1;
+                let next_page=current_index+increment;
+                if(next_page<0){
+                    next_page=max_index
+                }else if(next_page>max_index){
+                    next_page=0
+                };
+                this.setState({index:next_page});
+            }
+        }
+    }
+    // 預訂行程表單
+    class Booking extends React.Component{
+        state={
+            date:"2021-01-01",
+            checked:"am",
+            price:{
+                am:2000,
+                pm:2500
+            }
+        }
+        render(){
+            const {checked, price}=this.state;
+            console.log(this.props.id);
+            return(
+                <div className="booking">
+                    <h4>訂購導覽行程</h4>
+                    <p>以此景點為中心的一日行程，帶您探索城市角落故事</p>
+                    <form action="#" method="post">
+                        <label for="">選擇日期：</label>
+                        <input type="date" name="date" id="date" value={this.state.date} onChange={this.dateChange}/><br/>
+                        <label for="">選擇時段：</label> 
+                        <span className="radio_container">
+                            <input type="radio" name="period" id="am" checked={this.state.checked==="am"} onChange={this.handelCheck}/>
+                            <label for="am">上半天</label>
+                        </span>
+                        <span className="radio_container">
+                            <input type="radio" name="period" id="pm" checked={this.state.checked==="pm"} onChange={this.handelCheck}/>
+                            <label for="pm">下半天</label>
+                        </span><br/>                        
+                        <label for="">導覽費用：</label>新台幣<span>{price[checked]}</span>元<br/>
+                        <button type="submit">開始預訂行程</button>
+                    </form>
+                </div>
+            )
+        }
+        dateChange=(eObj)=>{
+            // console.log(eObj.target.value);
+            this.setState({date:eObj.target.value})
+        }
+        handelCheck=(eObj)=>{
+            // console.log(eObj.target.id);
+            this.setState({
+                checked:eObj.target.id
+            })
+        }
+    }
+
+    addEventListener("load", ()=>{
+        ReactDOM.render(<Main/>, document.querySelector("main"));
+    })
+</script>
 </head>
 <body>
-    
+    <header>
+        <div class="nav">
+            <div class="logo">
+                <a href="/"><h1>台北一日遊</h1></a>
+            </div>
+            <div class="menu">
+                <ul>
+                    <li><a href="#">預定行程</a></li>
+                    <li><a href="#">登入/註冊</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <main>
+        <!--由React組件渲染-->
+    </main>
+    <footer>
+        COPYRIGHT © 2021 台北一日遊
+    </footer>
 </body>
 </html>

@@ -5,6 +5,7 @@
     <link rel="stylesheet" type="text/css" href={{ url_for("static", filename="css/index.css") }}>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="text/javascript" src={{ url_for("static", filename="js/index.js") }}></script>
+    <!-- Load Pubsub-js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pubsub-js/1.9.3/pubsub.min.js" integrity="sha512-ASNLdxh5Knd0ESqUQE2hvUbXxOmu0y27vVVibROAKRomo+R6ocykvh0m8tE9qMEfmeVbEyNL1M6FvvyRKyZIoQ==" crossorigin="anonymous"></script>
     <script type="text/babel">
         class Databox extends React.Component{
@@ -151,13 +152,13 @@
                 <h2>輕鬆享受台北一日悠閒</h2>
                 <p>探索每個角落，體驗城市的深度旅遊行程</p>
                 <div id="search_form">
-                    <!--由React組件Search渲染-->
+                    <!--由Search組件渲染-->
                 </div>                
             </div>
             <img src="../static/images/welcome 1.png" alt="">
         </div>
     </div>
     <main>
-        <!--由React組件Databox渲染-->
+        <!--由Databox組件渲染-->
     </main>
 {% endblock %}

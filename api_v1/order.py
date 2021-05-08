@@ -5,7 +5,7 @@ from . import api
 
 #建立新的訂單，並完成付款
 @api.route("/orders", methods=["POST", ])
-def get_order_list():
+def create_order():
     pass
 
 #根據訂單編號取得訂單資訊

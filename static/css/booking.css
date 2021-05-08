@@ -70,7 +70,7 @@ button{
     font-weight: bold;
     margin-top: 10px;
 }
-
+/*RWD*/
 @media (max-width:1200px){
     main{
         width: 95%;

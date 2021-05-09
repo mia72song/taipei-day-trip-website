@@ -100,30 +100,46 @@
         // 預訂行程表單
         class Booking extends React.Component{
             state={
-                date:"2021-01-01",
+                date:"",
                 checked:"am",
                 price:{
                     am:2000,
                     pm:2500
                 }
             }
+            checkAvailableDate=()=>{
+                let current_time=new Date();
+                let month=current_time.getMonth()+1;
+                if(month.toString().length<2){
+                    month="0"+month;
+                }                    
+                let date=current_time.getDate()+1;
+                if(date.toString().length<2){
+                    date="0"+date;
+                }
+                const AvailableDate=current_time.getFullYear()+"-"+month+"-"+date;
+                return AvailableDate
+            }
+            componentDidMount(){
+                const selected_date=this.checkAvailableDate();
+                this.setState({date:selected_date});
+            }
             render(){
-                const {checked, price}=this.state;
-                console.log(this.props.attraction_idQ);
+                const {date, checked, price}=this.state;
                 return(
                     <div className="booking">
                         <h4>訂購導覽行程</h4>
                         <p>以此景點為中心的一日行程，帶您探索城市角落故事</p>
-                        <form action="#" method="post">
+                        <form method="post" onSubmit={this.handelSubmit}>
                             <label for="">選擇日期：</label>
-                            <input type="date" name="date" id="date" value={this.state.date} onChange={this.dateChange}/><br/>
+                            <input type="date" name="date" id="date" value={date} onChange={this.dateChange}/><br/>
                             <label for="">選擇時段：</label> 
                             <span className="radio_container">
-                                <input type="radio" name="period" id="am" checked={this.state.checked==="am"} onChange={this.handelCheck}/>
+                                <input type="radio" name="period" id="am" checked={checked==="am"} onChange={this.handelCheck}/>
                                 <label for="am">上半天</label>
                             </span>
                             <span className="radio_container">
-                                <input type="radio" name="period" id="pm" checked={this.state.checked==="pm"} onChange={this.handelCheck}/>
+                                <input type="radio" name="period" id="pm" checked={checked==="pm"} onChange={this.handelCheck}/>
                                 <label for="pm">下半天</label>
                             </span><br/>                        
                             <label for="">導覽費用：</label>新台幣<span>{price[checked]}</span>元<br/>
@@ -132,8 +148,20 @@
                     </div>
                 )
             }
+            handelSubmit=(eObj)=>{
+                eObj.preventDefault();
+                const {date, checked, price}=this.state;
+                const AvailableDate=this.checkAvailableDate();
+                if((Date.parse(date)).valueOf()>=(Date.parse(AvailableDate)).valueOf()){
+                    console.log("景點id："+this.props.attraction_id);
+                    console.log("日期："+date);
+                    console.log("時段："+checked);
+                    console.log("費用："+price[checked]);
+                }else{
+                    alert(`可供預約日期為明日(${AvailableDate})之後`);
+                }
+            }
             dateChange=(eObj)=>{
-                // console.log(eObj.target.value);
                 this.setState({date:eObj.target.value})
             }
             handelCheck=(eObj)=>{

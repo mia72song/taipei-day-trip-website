@@ -26,16 +26,21 @@
             <div class="menu">
                 <ul>
                     <li><a href="#">預定行程</a></li>
-                    <li><a id="showLoginForm" onclick="showLoginForm();">登入/註冊</a></li>
+                    <li id="login_status">
+                        <a id="login">登入/註冊</a>
+                        <a id="logout">登出會員</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </header>
     <script type="text/babel">
-        function showLoginForm(){
+        document.querySelector("#login").addEventListener("click", ()=>{
             const popup=document.querySelector("#popup_wrap");
             popup.style.display="block";
-        }
+            ReactDOM.render(<Popup/>, popup)
+        })
+        // 登入/註冊的跳窗畫面
         class Popup extends React.Component{
             state={
                 login:true
@@ -74,6 +79,7 @@
                 this.setState({login:!login});
             }
         }
+        // 登入表單
         class LoginForm extends React.Component{
             state={
                 email:"",
@@ -101,7 +107,7 @@
                     return
                 }
                 const data={email, password};
-                console.log(data);
+                alert(data);
             }
             handleChange=(dataType)=>{
                 return(eObj)=>{
@@ -109,6 +115,7 @@
                 }
             }
         }
+        // 註冊表單
         class SignupForm extends React.Component{
             state={
                 username:"",
@@ -139,7 +146,7 @@
                     return
                 }
                 const data={username, email, password};
-                console.log(data);
+                alert(data);
             }
             handleChange=(dataType)=>{
                 return(eObj)=>{
@@ -147,9 +154,6 @@
                 }
             }
         }
-        addEventListener("load", ()=>{
-            ReactDOM.render(<Popup/>, document.querySelector("#popup_wrap"))
-        })
     </script>
     {% block content %}
     

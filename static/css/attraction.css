@@ -63,6 +63,9 @@ main{
     line-height:2;
     margin: auto 10px;
 }
+.title>h2{
+    font-size: 1.6em;
+}
 .wrap{
     background-color:#E8E8E8;
     border-radius: 5px;
@@ -137,6 +140,7 @@ input[type="date"]{
     }
     .info{
         width: 540px;
+        padding-top: 5px;
     }
 }
 @media (max-width:600px){

@@ -61,6 +61,13 @@ header{
 .menu a{
     color: #666666;
 }
+#login{
+    display: inline-block;
+}
+#logout{
+    display: none;
+    text-decoration:underline;
+}
 #popup_wrap{
     width: 100%;
     height: 100%;
@@ -118,6 +125,7 @@ header{
 }
 .hint a:hover{
     color: #337788;
+    text-decoration:underline;
 }
 #popup input{
     width: 310px;

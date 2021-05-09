@@ -1,4 +1,4 @@
-from flask import make_response, session, redirect
+from flask import make_response, session
 
 from data.db import Mydb
 from . import api

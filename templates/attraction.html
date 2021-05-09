@@ -101,12 +101,13 @@
         class Booking extends React.Component{
             state={
                 date:"",
-                checked:"am",
+                checked:"am", // or "pm"
                 price:{
                     am:2000,
                     pm:2500
                 }
             }
+            // 顯示明日的日期，可以預約的日期自「明日」開始
             checkAvailableDate=()=>{
                 let current_time=new Date();
                 let month=current_time.getMonth()+1;
@@ -121,8 +122,7 @@
                 return AvailableDate
             }
             componentDidMount(){
-                const selected_date=this.checkAvailableDate();
-                this.setState({date:selected_date});
+                this.setState({date:this.checkAvailableDate()});
             }
             render(){
                 const {date, checked, price}=this.state;
@@ -162,13 +162,17 @@
                 }
             }
             dateChange=(eObj)=>{
-                this.setState({date:eObj.target.value})
+                const date=eObj.target.value;
+                const AvailableDate=this.checkAvailableDate();
+                if((Date.parse(date)).valueOf()>=(Date.parse(AvailableDate)).valueOf()){
+                    this.setState({date})
+                }else{
+                    alert(`可供預約日期為明日(${AvailableDate})之後`);
+                }
             }
             handelCheck=(eObj)=>{
                 // console.log(eObj.target.id);
-                this.setState({
-                    checked:eObj.target.id
-                })
+                this.setState({checked:eObj.target.id});
             }
         }
     

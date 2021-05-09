@@ -55,6 +55,30 @@ class Mydb:
         data = self.cur.fetchall()
         return data
 
+    def email_exists(self, email):
+        sql = f"SELECT * FROM users WHERE email='{email}'"
+        self.cur.execute(sql)
+        result = self.cur.fetchone()
+        if result:
+            return True
+        else:
+            return False
+
+    def createUser(self, username, email, password):
+        if not self.email_exists(email):
+            sql = f"INSERT INTO users (username, email, password) VALUES ('{username}','{email}','{password}')"
+            self.cur.execute(sql)
+            self.conn.commit()
+            print("新用戶已寫入")
+        else:
+            print("此email已註冊過")
+    
+    def getUser(self, email, password):
+        sql = f"SELECT username, email, password FROM users WHERE email='{email}' and password='{password}'"
+        self.cur.execute(sql)
+        data = self.cur.fetchone()
+        return data
+
     def __del__(self):
         self.cur.close()
         self.conn.close()
@@ -62,6 +86,6 @@ class Mydb:
 
 if __name__ == "__main__":
     mydb = Mydb()
-    result = mydb.getDataByKeyword("公園", 36, 12)
-    print(result)
+    data = mydb.getUser("mia72song@gmail.com", "12345678")
+    print(data)
     del mydb

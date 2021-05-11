@@ -67,7 +67,7 @@ class Mydb:
 
     def createUser(self, username, email, password):
         if not self.email_exists(email):
-            password_hash = self.get_password_hash(password)
+            password_hash = generate_password_hash(password)
             sql = f"INSERT INTO users (username, email, password) VALUES ('{username}','{email}','{password_hash}')"
             self.cur.execute(sql)
             self.conn.commit()

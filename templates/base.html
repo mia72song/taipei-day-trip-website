@@ -156,26 +156,29 @@
                 message:""
             }
             render(){
-                let msg=this.state.message;
+                let {username, email, password, message}=this.state;
                 let ok_style;
-                if(msg==="ok"){
-                    msg="註冊成功，請重新登入"
+                if(message==="ok"){
+                    message="註冊成功，請重新登入";
                     ok_style={color:"blue"};
+                    username="";
+                    email="";
+                    password="";
                 }
                 return(
                     <div id="signupForm">
                         <form method="post"  onSubmit={this.handleSubmit}>
                             <h3>註冊會員帳號</h3>
                             <input type="text" name="username" id="username" placeholder="輸入姓名"
-                                value={this.state.username} onChange={this.handleChange("username")}/>
+                                value={username} onChange={this.handleChange("username")}/>
                             <input type="email" name="email" id="email" placeholder="輸入電子信箱"
-                                value={this.state.email} onChange={this.handleChange("email")}/>
+                                value={email} onChange={this.handleChange("email")}/>
                             <input type="password" name="password" id="password" placeholder="輸入密碼 ( 4個以上英數字 )"
-                                value={this.state.password} onChange={this.handleChange("password")}/>
+                                value={password} onChange={this.handleChange("password")}/>
                             <br />
                             <input type="submit" value="註冊新帳戶" />
                         </form>
-                        <p className="msg" style={ok_style}>{msg}</p>
+                        <p className="msg" style={ok_style}>{message}</p>
                     </div>
                 )
             }

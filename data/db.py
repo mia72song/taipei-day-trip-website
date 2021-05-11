@@ -1,5 +1,6 @@
 import pymysql
 import os
+from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -55,6 +56,42 @@ class Mydb:
         data = self.cur.fetchall()
         return data
 
+    def email_exists(self, email):
+        sql = f"SELECT * FROM users WHERE email='{email}'"
+        self.cur.execute(sql)
+        result = self.cur.fetchone()
+        if result:
+            return True
+        else:
+            return False
+
+    def createUser(self, username, email, password):
+        if not self.email_exists(email):
+            password_hash = generate_password_hash(password)
+            sql = f"INSERT INTO users (username, email, password) VALUES ('{username}','{email}','{password_hash}')"
+            self.cur.execute(sql)
+            self.conn.commit()
+            print("新用戶已寫入")
+        else:
+            print("此email已註冊過")
+    
+    def getUser(self, email, password):
+        sql = f"SELECT id, username, email, password FROM users WHERE email='{email}'"
+        self.cur.execute(sql)
+        data = self.cur.fetchone()
+        print(data)
+        if data and check_password_hash(data[3], password):
+            return data[0], data[1], data[2]
+        else:
+            return None
+
+    def updatePassword(self, email, password, username=None, phone=None):
+        password_hash = generate_password_hash(password)
+        sql=f"UPDATE users SET password='{password_hash}' WHERE email='{email}'"
+        self.cur.execute(sql)
+        self.conn.commit()
+        print("密碼已更新")
+
     def __del__(self):
         self.cur.close()
         self.conn.close()
@@ -62,6 +99,7 @@ class Mydb:
 
 if __name__ == "__main__":
     mydb = Mydb()
-    result = mydb.getDataByKeyword("公園", 36, 12)
-    print(result)
+    mydb.updatePassword("test@test.com", "test")
+    data = mydb.getUser("test@test.com", "test")
+    print(data)
     del mydb

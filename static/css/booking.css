@@ -25,12 +25,12 @@ main>div{
 }
 .detail{
     flex:auto;
-    line-height: 2;
+    line-height: 2.2;
     padding-left: 20px;
 }
-#name{
+.detail>h3{
     color: #448899;
-    margin: 8px 0;
+    margin-bottom: 8px;
 }
 .detail>label{
     font-weight: bold;
@@ -42,48 +42,41 @@ main>div{
 }
 .contact_info{
     padding: 15px 5px;
-    line-height: 2;
+    line-height: 2.5;
 }
 .payment_info{
     padding: 15px 5px;
-    line-height: 2;
+    line-height: 2.5;
 }
 .billing_info{
     padding: 15px 5px;
-    line-height: 2;
+    line-height: 2.5;
     text-align: end;
+}
+form>h5{
+    margin-top:10px;
 }
 input{
     border-radius: 3px;
-    padding: 2px;
+    padding: 5px;
+    border: 1px solid #E8E8E8;
 }
 button{
     background-color: #448899;
     border: 1px solid #448899;
-    padding: 5px 10px;
+    padding: 8px 20px;
     color: white;
     border-radius: 5px;
-    margin-top:10px;
+    font-weight: bold;
+    margin-top: 10px;
 }
-
+/*RWD*/
 @media (max-width:1200px){
-    .nav{
-        width:95%;
-    }
     main{
         width: 95%;
     }
 }
 @media (max-width:600px){
-    body{
-        font-size: 15px;
-    }
-    h1{
-        font-size: 1.8em;
-    }
-    .menu ul li{
-        margin-right:5px;
-    }
     main{
         width: 95%;
     }
@@ -106,5 +99,8 @@ button{
     }
     .payment_info{
         padding: 15px;
+    }
+    .billing_info{
+        padding:0 20px;
     }
 }

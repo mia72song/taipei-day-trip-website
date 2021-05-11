@@ -1,34 +1,21 @@
-<!DOCTYPE html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Booking Page</title>
-<link rel="stylesheet" href="../static/css/base.css">
-<link rel="stylesheet" href="../static/css/booking.css">
-</head>
-<body>
-    <header>
-        <div class="nav">
-            <div class="logo">
-                <h1>台北一日遊</h1>
-            </div>
-            <div class="menu">
-                <ul>
-                    <li><a href="#">預定行程</a></li>
-                    <li><a href="#">登入/註冊</a></li>
-                </ul>
-            </div>
-        </div>
-    </header>
+{% extends "base.html" %}
+{% block title %}Booking Page{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href={{ url_for("static", filename="css/booking.css") }}>
+{% endblock %}
+{% block content %}
     <main>
         <div>
-            <h3>你好，<span>USER</span>，待預訂的行程如下：</h3>
+            <h3>你好，<span id="username">USER</span>，待預訂的行程如下：</h3>
             <div class="booking_info">
                 <div class="img_div">
                     <img src="../static/images/books_apple_hires.jpg">
                 </div>
                 <div class="detail">
-                    <h4 id="name">台北一日遊：平安鐘</h4>
+                    <h3>台北一日遊：
+                        <span id="attraction">平安鐘</span>
+                    </h3>
                     <label for="">日期：</label><span id="date">2021-05-01</span><br/>
                     <label for="">時間：</label><span id="time">xxxxxxxxxx</span><br/>
                     <label for="">費用：</label><span id="price">xxxxxxxxxx</span><br/>
@@ -45,11 +32,11 @@
             <div class="contact_info">
                 <form action="" method="post">
                     <label for="">聯絡姓名：</label>
-                    <input type="text" name="username" id="username"><br/>
+                    <input type="text" name="name" id="name" value=""><br/>
                     <label for="">連絡信箱：</label>
-                    <input type="email" name="email" id="email"><br/>
+                    <input type="email" name="email" id="email" value=""><br/>
                     <label for="">手機號碼：</label>
-                    <input type="text" name="phone" id="phone">
+                    <input type="text" name="phone" id="phone" value="">
                 </form>
             </div>
         </div>
@@ -61,9 +48,9 @@
                     <label for="">卡片號碼：</label>
                     <input type="text" name="card_number" id="card_number"><br/>
                     <label for="">過期時間：</label>
-                    <input type="text" name="expires_end" id="expires_end"><br/>
+                    <input type="text" name="expires_end" id="expires_end" value="MM / YY"><br/>
                     <label for="">驗證密碼：</label>
-                    <input type="password" name="security_code" id="security_code">
+                    <input type="text" name="security_code" id="security_code" value="CVV">
                     <h5>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</h5>
                 </form>
             </div>
@@ -71,13 +58,9 @@
         <hr />
         <div>
             <div class="billing_info">
-                <h3>總價：新台幣 <span id="amount">2000</span> 元</h3>
+                <h4>總價：新台幣 <span id="amount">2000</span> 元</h4>
                 <button>確認訂購並付款</button>
             </div>
         </div>
     </main>
-    <footer>
-        COPYRIGHT © 2021 台北一日遊
-    </footer>
-</body>
-</html>
+{% endblock %}

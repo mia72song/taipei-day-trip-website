@@ -135,7 +135,7 @@
                 let p=ajaxRequest('patch', data);
                 p.then(resp=>{
                     if(resp.ok){
-                        location.href=`${window.origin}/`;
+                        location.href=window.location;
                     }else if(resp.error){
                         this.setState({message:resp.message});
                     }

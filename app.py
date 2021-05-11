@@ -1,5 +1,10 @@
 from flask import *
+import os
+
 app=Flask(__name__)
+
+app.config["SECRET_KEY"] = os.urandom(24)
+app.config["PERMANENT_SESSION_LIFETIME"] = 86400
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 

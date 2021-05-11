@@ -6,7 +6,7 @@
     overflow: hidden;
     margin:54px auto 0 auto;
 }
-.title{
+.title_wrap{
     width:1200px;
     min-width:320px;
     height: inherit;
@@ -14,13 +14,13 @@
     position: relative;
     margin: auto;
 }
-.title img{
+.title_wrap>img{
     position:absolute;
     bottom: 0;
     right:-10%;
     z-index: 1;
 }
-.wrap{
+.title{
     width:95%;
     height:auto;
     margin:auto;
@@ -102,10 +102,10 @@ main{
 }
 /*RWD*/
 @media (max-width:1200px){
-    .title{
+    .title_wrap{
         width: 95%;
     }
-    .title>img{
+    .title_wrap>img{
         right:-25%;
     }
     main{
@@ -119,12 +119,12 @@ main{
     .banner{
         height: 280px;
     }
-    .title>img{
+    .title_wrap>img{
         width: 95%;
         bottom: 0;
         right:-30%;
     }
-    .wrap{
+    .title{
         padding-top: 50px;
     }
     .search input{

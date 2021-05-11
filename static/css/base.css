@@ -81,7 +81,7 @@ header{
 #popup{
     background: linear-gradient(270deg, #337788 0%, #66AABB 100%);
     width: 340px;
-    height: 275px;
+    height: auto;
     box-shadow: 0px 4px 60px #AAAAAA;
     border-radius: 6px;
     text-align: center;
@@ -89,21 +89,11 @@ header{
     padding-top: 10px;
     position: relative;
 }
-#loginForm{
+#loginForm, #signupForm{
     padding-top: 5px;
-    height: 265px;
+    height: auto;
     background: #FFFFFF;
     line-height: 2.5;
-    border-bottom-right-radius:6px;
-    border-bottom-left-radius:6px;
-}
-#signupForm{
-    padding-top: 5px;
-    height: 322px;
-    background: #FFFFFF;
-    line-height: 2.5;
-    border-bottom-right-radius:6px;
-    border-bottom-left-radius:6px;
 }
 .close_btn{
     font-size: 20px;
@@ -116,12 +106,19 @@ header{
     font-weight: bolder;
     color: #337788;
 }
+.msg{
+    color:red;
+    font-style:italic;
+    line-height: 20px;
+    letter-spacing:2px;
+}
 .hint{
     width:inherit;
-    height: 47px;
-    line-height: 47px;
-    position: absolute;
-    bottom: 0;
+    min-height: 45px;
+    line-height: 45px;
+    background: #FFFFFF;
+    border-bottom-right-radius:6px;
+    border-bottom-left-radius:6px;
 }
 .hint a:hover{
     color: #337788;

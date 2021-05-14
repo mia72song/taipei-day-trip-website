@@ -14,3 +14,27 @@ function getDataById(){
     }
     return p
 }
+
+function createBooking(data){
+    const url=`${window.origin}/api/booking`;
+    let p=fetch(url, {
+        method:"post", 
+        credentials:"include",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify(data)
+    }).then(response=>{
+        if(response.status===403){
+            alert("請先登入會員");
+        }
+        if(response.status!==500){
+            return response.json()
+        }else{
+            console.log(response.json())
+        }
+    }).catch(error=>{
+        console.log(error)
+    });
+    return p
+}

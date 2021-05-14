@@ -6,13 +6,13 @@ from . import api
 #取得當前已登入的使用者資訊api
 @api.route("/user")
 def get_current_user():
-    data = session.get("user_info")
-    if data:
+    current_user = session.get("user_info")
+    if current_user:
         return make_response(jsonify({
             "data":{
-                "id":data[0],
-                "name":data[1],
-                "email":data[2]
+                "id":current_user[0],
+                "name":current_user[1],
+                "email":current_user[2]
             }
         }), 200)
     else:
@@ -21,9 +21,9 @@ def get_current_user():
 #註冊新用戶api
 @api.route("/user", methods=["POST"])
 def signup():
-    data = request.get_json()
-    if data:
-        if data["name"]=="" or data["email"]=="" or data["password"]=="":
+    user_info = request.get_json()
+    if user_info:
+        if user_info["name"]=="" or user_info["email"]=="" or user_info["password"]=="":
             return make_response(
                 jsonify({
                     "error": True,
@@ -31,7 +31,7 @@ def signup():
                 }), 400
             )
         mydb = Mydb()
-        if mydb.email_exists(data["email"]):
+        if mydb.email_exists(user_info["email"]):
             return make_response(
                 jsonify({
                     "error": True,
@@ -40,13 +40,13 @@ def signup():
             )
         else:
             try:
-                mydb.createUser(data["name"], data["email"], data["password"])
+                mydb.createUser(user_info["name"], user_info["email"], user_info["password"])
             except Exception as e:
                 return make_response(jsonify({
                     "error":True,
                     "message":f"伺服器內部錯誤:{e}"
                 }), 500)
-
+            del mydb
             return make_response(jsonify({"ok": True}), 200)
     else:
         return make_response(
@@ -59,9 +59,9 @@ def signup():
 #驗證登入api
 @api.route("/user", methods=["PATCH"])
 def login():
-    data = request.get_json()
-    if data:
-        if data["email"]=="" or data["password"]=="":
+    user_info = request.get_json()
+    if user_info:
+        if user_info["email"]=="" or user_info["password"]=="":
             return make_response(
                 jsonify({
                     "error": True,
@@ -71,7 +71,7 @@ def login():
         
         try:
             mydb = Mydb()
-            user_info = mydb.getUser(data["email"], data["password"])
+            user_info = mydb.getUser(user_info["email"], user_info["password"])
         except Exception as e:
             return make_response(jsonify({
                 "error":True,

@@ -1,5 +1,5 @@
 import json
-from db import Mydb
+from .db import Mydb
 
 with open("taipei-attractions.json", "r", encoding="utf-8") as f:
     data = json.load(f)

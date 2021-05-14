@@ -92,6 +92,29 @@ class Mydb:
         self.conn.commit()
         print("密碼已更新")
 
+    def createBooking(self, aid, date, period, price, uid):
+        sql=f"INSERT INTO bookings (date, period, price, attraction_id, user_id) VALUES ('{date}', '{period}', {price}, {aid}, {uid})"
+        self.cur.execute(sql)
+        self.conn.commit()
+        print("預定行程已新增")
+
+    def getBookingsByUserID(self, uid):
+        sql=f'''SELECT b.id,
+            a.id, a.name, a.address, a.images, 
+            b.date, b.period, b.price
+            FROM bookings AS b
+            INNER JOIN attractions as a ON b.attraction_id=a.id 
+            WHERE b.user_id={uid} and b.is_del=0'''
+        self.cur.execute(sql)
+        data = self.cur.fetchall()
+        return data
+
+    def fakeDelBooking(self, bid):
+        sql=f"UPDATE bookings SET is_del=1 WHERE id={bid}"
+        self.cur.execute(sql)
+        self.conn.commit()
+        print(f"編號：{bid} 已執行假刪除")
+
     def __del__(self):
         self.cur.close()
         self.conn.close()
@@ -99,7 +122,7 @@ class Mydb:
 
 if __name__ == "__main__":
     mydb = Mydb()
-    mydb.updatePassword("test@test.com", "test")
-    data = mydb.getUser("test@test.com", "test")
+    mydb.fakeDelBooking(4)
+    data = mydb.getBookingsByUserID(1)
     print(data)
     del mydb

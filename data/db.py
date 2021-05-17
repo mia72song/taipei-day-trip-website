@@ -79,7 +79,7 @@ class Mydb:
         sql = f"SELECT id, username, email, password FROM users WHERE email='{email}'"
         self.cur.execute(sql)
         data = self.cur.fetchone()
-        print(data)
+        # print(data)
         if data and check_password_hash(data[3], password):
             return data[0], data[1], data[2]
         else:

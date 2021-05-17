@@ -81,8 +81,8 @@ def get_attractions():
                 nextPage = None
             
             for r in results:
-                spot = dictFormatter(r)
-                attractions.append(spot)
+                data_dict = dictFormatter(r)
+                attractions.append(data_dict)
         else:
             nextPage = None
         

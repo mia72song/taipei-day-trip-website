@@ -21,9 +21,9 @@ def get_current_user():
 #註冊新用戶api
 @api.route("/user", methods=["POST"])
 def signup():
-    user_info = request.get_json()
-    if user_info:
-        if user_info["name"]=="" or user_info["email"]=="" or user_info["password"]=="":
+    signup_data = request.get_json()
+    if signup_data:
+        if signup_data["name"]=="" or signup_data["email"]=="" or signup_data["password"]=="":
             return make_response(
                 jsonify({
                     "error": True,
@@ -31,7 +31,7 @@ def signup():
                 }), 400
             )
         mydb = Mydb()
-        if mydb.email_exists(user_info["email"]):
+        if mydb.email_exists(signup_data["email"]):
             return make_response(
                 jsonify({
                     "error": True,
@@ -40,7 +40,7 @@ def signup():
             )
         else:
             try:
-                mydb.createUser(user_info["name"], user_info["email"], user_info["password"])
+                mydb.createUser(signup_data["name"], signup_data["email"], signup_data["password"])
             except Exception as e:
                 return make_response(jsonify({
                     "error":True,
@@ -59,9 +59,9 @@ def signup():
 #驗證登入api
 @api.route("/user", methods=["PATCH"])
 def login():
-    user_info = request.get_json()
-    if user_info:
-        if user_info["email"]=="" or user_info["password"]=="":
+    login_data = request.get_json()
+    if login_data:
+        if login_data["email"]=="" or login_data["password"]=="":
             return make_response(
                 jsonify({
                     "error": True,
@@ -71,7 +71,7 @@ def login():
         
         try:
             mydb = Mydb()
-            user_info = mydb.getUser(user_info["email"], user_info["password"])
+            user_info = mydb.getUser(login_data["email"], login_data["password"])
         except Exception as e:
             return make_response(jsonify({
                 "error":True,

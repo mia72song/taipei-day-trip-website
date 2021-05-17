@@ -24,7 +24,7 @@
             </div>
             <div class="menu">
                 <ul>
-                    <li><a href="#">預定行程</a></li>
+                    <li><a id="create_booking">預定行程</a></li>
                     <li id="login_status">
                         <a id="login">登入/註冊</a>
                         <a id="logout">登出會員</a>
@@ -34,13 +34,20 @@
         </div>
     </header>
     <script type="text/babel">
+        const popup_wrap=document.querySelector("#popup_wrap");
+        const login=document.querySelector("#login");
+        const logout=document.querySelector("#logout");
+        const showPopUp=()=>{
+            popup_wrap.style.display="block";
+            ReactDOM.render(<Popup/>, popup_wrap)
+        }
+        let currentUser;
         // 頁面載入時，取得當前已登入的使用者資訊
         addEventListener("load", ()=>{
             ajaxRequest("get").then(resp=>{
                 // console.log(resp.data);
-                const login=document.querySelector("#login");
-                const logout=document.querySelector("#logout");
                 if(resp.data){
+                    currentUser=resp.data;
                     login.style.display="none";
                     logout.style.display="inline-block";
                 }else{
@@ -50,7 +57,7 @@
             })
         })
         // 點擊登出
-        document.querySelector("#logout").addEventListener("click", ()=>{
+        logout.addEventListener("click", ()=>{
             ajaxRequest("delete").then(resp=>{
                 if(resp.ok){
                     location.href=window.location;
@@ -58,16 +65,22 @@
             })
         })
         // 點擊跳窗登入/註冊畫面
-        const popup_wrap=document.querySelector("#popup_wrap");
-        document.querySelector("#login").addEventListener("click", ()=>{
-            popup_wrap.style.display="block";
-            ReactDOM.render(<Popup/>, popup_wrap)
+        login.addEventListener("click", showPopUp)
+        // 點擊預定行程
+        document.querySelector("#create_booking").addEventListener("click", ()=>{
+            if(currentUser){
+                location.href="/booking";
+            }else{
+                showPopUp();
+            }
         })
+        // 點擊框外，關閉登入/註冊畫面
         popup_wrap.addEventListener("click", (eObj)=>{
             if(eObj.target===popup_wrap){
                 popup_wrap.style.display="none";
             }
         })
+        
         // 登入/註冊的跳窗組件
         class Popup extends React.Component{
             state={
@@ -95,7 +108,7 @@
                 )
             }
             closeLoginForm=()=>{
-                document.querySelector("#popup_wrap").style.display="none";
+                popup_wrap.style.display="none";
             }
             changeFormType=()=>{
                 this.setState({login:!this.state.login});

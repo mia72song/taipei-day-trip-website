@@ -4,7 +4,7 @@ from flask import make_response, request, jsonify, session
 from data.db import Mydb
 from . import api
 
-def dictFormatter(bookings):
+def dataFormatter(bookings):
     data_list=[]
     for b in bookings:
         if not b : break
@@ -32,7 +32,7 @@ def get_booking_list():
         mydb = Mydb()
         bookings = mydb.getBookingsByUserID(uid)
         if bookings:
-            data_list = dictFormatter(bookings)
+            data_list = dataFormatter(bookings)
             return jsonify({"data":data_list}), 200
         else:
             return jsonify({"data":None}), 200

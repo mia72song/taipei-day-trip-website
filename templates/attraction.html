@@ -153,22 +153,27 @@
                 const {date, checked, price}=this.state;
                 const AvailableDate=this.checkAvailableDate();
                 if((Date.parse(date)).valueOf()>=(Date.parse(AvailableDate)).valueOf()){
-                    const data={
-                        attractionId:this.props.attraction_id,
-                        date,
-                        time:checked,
-                        price:price[checked]
-                    }
-                    createBooking(data).then(resp=>{
-                        if(resp.ok){
-                            console.log(resp);
-                        }else if(resp.error){
-                            console.log(resp.message);
-                            if(!resp.message.login){
-                                console.log("未登入")
+                    if(!currentUser){
+                        showPopUp();
+                    }else{
+                        const data={
+                            attractionId:this.props.attraction_id,
+                            date,
+                            time:checked,
+                            price:price[checked]
+                        };
+                        createBooking(data).then(resp=>{
+                            if(resp.ok){
+                                location.href="/booking";
+                            }else if(resp.error){
+                                if(!resp.message.login){
+                                    showPopUp();
+                                }else{
+                                    alert(resp.message);
+                                }
                             }
-                        }
-                    })
+                        });
+                    }
                 }else{
                     alert(`可供預約日期為明日(${AvailableDate})之後`);
                 }

@@ -15,6 +15,7 @@ function getDataById(){
     return p
 }
 
+// 向後端預定新的行程
 function createBooking(data){
     const url=`${window.origin}/api/booking`;
     let p=fetch(url, {
@@ -25,9 +26,6 @@ function createBooking(data){
         },
         body:JSON.stringify(data)
     }).then(response=>{
-        if(response.status===403){
-            alert("請先登入會員");
-        }
         if(response.status!==500){
             return response.json()
         }else{

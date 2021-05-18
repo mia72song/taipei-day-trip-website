@@ -102,7 +102,7 @@ hr{
     .del img{
         position: absolute;
         right: 5px;
-        bottom: -30px;
+        bottom: -5px;
     }
     .contact_info{
         padding:15px;

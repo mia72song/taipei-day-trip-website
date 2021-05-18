@@ -1,5 +1,5 @@
-import data
 from flask import make_response, request, jsonify, session
+import json
 
 from data.db import Mydb
 from . import api
@@ -70,9 +70,9 @@ def create_booking():
 @api.route("/booking", methods=["DELETE"])
 def delete_booking():
     if session.get("user_info"):
-        bid = request.get_json()  # 前端傳來booking的id
+        del_data = request.get_json()  # 前端傳來booking的id
         mydb = Mydb()
-        mydb.fakeDelBooking(bid)
+        mydb.delBookingById(del_data["bid"], session.get("user_info")[0])
         del mydb
         return jsonify({"ok": True}), 200
     else:

@@ -42,6 +42,7 @@
             ReactDOM.render(<Popup/>, popup_wrap)
         }
         let currentUser;
+        let nextPathAfterLogin="/";
         // 頁面載入時，取得當前已登入的使用者資訊
         addEventListener("load", ()=>{
             ajaxRequest("get").then(resp=>{
@@ -60,17 +61,21 @@
         logout.addEventListener("click", ()=>{
             ajaxRequest("delete").then(resp=>{
                 if(resp.ok){
-                    location.href=window.location;
+                    location.reload();
                 }
             })
         })
         // 點擊跳窗登入/註冊畫面
-        login.addEventListener("click", showPopUp)
+        login.addEventListener("click", ()=>{
+            nextPathAfterLogin="/";
+            showPopUp();
+        })
         // 點擊預定行程
         document.querySelector("#create_booking").addEventListener("click", ()=>{
             if(currentUser){
                 location.href="/booking";
             }else{
+                nextPathAfterLogin="/booking";
                 showPopUp();
             }
         })
@@ -148,7 +153,7 @@
                 let p=ajaxRequest('patch', data);
                 p.then(resp=>{
                     if(resp.ok){
-                        location.href=window.location;
+                        location.href=nextPathAfterLogin;
                     }else if(resp.error){
                         this.setState({message:resp.message});
                     }

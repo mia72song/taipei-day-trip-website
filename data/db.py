@@ -104,7 +104,8 @@ class Mydb:
             b.date, b.period, b.price
             FROM bookings AS b
             INNER JOIN attractions as a ON b.attraction_id=a.id 
-            WHERE b.user_id={uid} and b.is_del=0'''
+            WHERE b.user_id={uid} and b.is_del=0
+            ORDER BY create_datetime desc'''
         self.cur.execute(sql)
         data = self.cur.fetchall()
         return data
@@ -115,6 +116,12 @@ class Mydb:
         self.conn.commit()
         print(f"編號：{bid} 已執行假刪除")
 
+    def delBookingById(self, bid, uid):
+        sql=f"DELETE FROM bookings WHERE id={bid} and user_id={uid}"
+        self.cur.execute(sql)
+        self.conn.commit()
+        print(f"編號：{bid} 已刪除")
+
     def __del__(self):
         self.cur.close()
         self.conn.close()
@@ -122,7 +129,5 @@ class Mydb:
 
 if __name__ == "__main__":
     mydb = Mydb()
-    mydb.fakeDelBooking(4)
     data = mydb.getBookingsByUserID(1)
-    print(data)
     del mydb

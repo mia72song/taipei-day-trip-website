@@ -3,64 +3,152 @@
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" type="text/css" href={{ url_for("static", filename="css/booking.css") }}>
+    <script type="text/babel">
+        class Main extends React.Component{
+            state={
+                name:"",
+                email:"",
+                phone:"",
+                card_number:"",
+                expires_end:"",
+                security_code:"",
+                amount:""
+            }
+            componentDidMount(){
+                this.setState({
+                    name:currentUser.name,
+                    email:currentUser.email
+                })
+            }
+            render(){
+                // console.log(this.props.data);
+                // console.log(currentUser)
+                let booking_list;
+                if(this.props.data.length>0){
+                    booking_list=this.props.data.map(b=><BookingList key={b.booking_id} data={b}/>)
+                }else{
+                    booking_list=<p>目前沒有任何待預訂的行程</p>
+                }
+                return(
+                    <div id="main">
+                        <div class="content">
+                            <h3>你好，<span id="username">{currentUser.name}</span>，待預訂的行程如下：</h3>
+                        </div>
+                        <div>
+                            {booking_list}
+                        </div>
+                        <hr/>
+                        <div>
+                            <h3>您的聯絡資訊</h3>
+                            <div class="contact_info">
+                                <form action="" method="post">
+                                    <label for="">聯絡姓名：</label>
+                                    <input type="text" name="name" id="name" value={this.state.name}/><br/>
+                                    <label for="">連絡信箱：</label>
+                                    <input type="email" name="email" id="email" value={this.state.email}/><br/>
+                                    <label for="">手機號碼：</label>
+                                    <input type="text" name="phone" id="phone" value=""/>
+                                </form>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div>
+                            <h3>信用卡付款資訊</h3>
+                            <div class="payment_info">
+                                <form action="" method="post">
+                                    <label for="">卡片號碼：</label>
+                                    <input type="text" name="card_number" id="card_number"/><br/>
+                                    <label for="">過期時間：</label>
+                                    <input type="text" name="expires_end" id="expires_end" placeholder="MM / YY"/><br/>
+                                    <label for="">驗證密碼：</label>
+                                    <input type="password" name="security_code" id="security_code" placeholder="CVV"/>
+                                    <h5>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</h5>
+                                </form>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div>
+                            <div class="billing_info">
+                                <h4>總價：新台幣 <span id="amount">2000</span> 元</h4>
+                                <button>確認訂購並付款</button>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+        }
+        class BookingList extends React.Component{
+            render(){
+                // console.log(this.props.data);
+                const data=this.props.data;
+                let period;
+                if(data.time==="morning"){
+                    period="上午9點到12點"
+                }else{
+                    period="下午2點到5點"
+                }
+                return(
+                    <div>
+                        <div class="booking_info">
+                            <div class="img_div">
+                                <img src={data.attraction.image}/>
+                            </div>
+                            <div class="detail">
+                                <h3>台北一日遊：
+                                    <span class="attraction_name">{data.attraction.name}</span>
+                                </h3>
+                                <label for="">日期：</label><span class="attraction_date">{data.date}</span><br/>
+                                <label for="">時間：</label><span class="attraction_time">{period}</span><br/>
+                                <label for="">費用：</label><span class="attraction_price">新台幣{data.price}元</span><br/>
+                                <label for="">地點：</label><span class="attraction_address">{data.attraction.address}</span>
+                            </div>
+                            <div class="del">
+                                <a onClick={this.handleDelete(data.booking_id)}><img src="../static/images/icon_delete.png" alt="" width="30px"/></a>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+            handleDelete=(bid)=>{
+                return ()=>{
+                    // console.log(bid)
+                    fetch(`${window.origin}/api/booking`, {
+                        method:"delete",
+                        credentials:"include",
+                        headers:{
+                            "Content-Type":"application/json"
+                        },
+                        body:JSON.stringify({bid})
+                    }).then(response=>{
+                        return response.json()
+                    }).then(resp=>{
+                        if(resp.error){
+                            location.href="/";
+                        }else{
+                            location.href=window.location;
+                        }
+                    }).catch(error=>{
+                        console.log(error)
+                    })
+                }
+            }
+        }
+
+        addEventListener("load", ()=>{
+            fetch(`${window.origin}/api/booking`).then(response=>{
+                if(response.status===403){
+                    location.href="/";
+                }else{
+                    return response.json()
+                }
+            }).then(resp=>{
+                ReactDOM.render(<Main data={resp.data}/>, document.querySelector("main"))
+            })
+        })
+    </script>
 {% endblock %}
 {% block content %}
     <main>
-        <div>
-            <h3>你好，<span id="username">USER</span>，待預訂的行程如下：</h3>
-            <div class="booking_info">
-                <div class="img_div">
-                    <img src="../static/images/books_apple_hires.jpg">
-                </div>
-                <div class="detail">
-                    <h3>台北一日遊：
-                        <span id="attraction">平安鐘</span>
-                    </h3>
-                    <label for="">日期：</label><span id="date">2021-05-01</span><br/>
-                    <label for="">時間：</label><span id="time">xxxxxxxxxx</span><br/>
-                    <label for="">費用：</label><span id="price">xxxxxxxxxx</span><br/>
-                    <label for="">地點：</label><span id="address">xxxxxxxxxx</span>
-                </div>
-                <div class="del">
-                    <a href="#"><img src="../static/images/icon_delete.png" alt="" width="30px"></a>
-                </div>
-            </div>
-        </div>
-        <hr />
-        <div>
-            <h3>您的聯絡資訊</h3>
-            <div class="contact_info">
-                <form action="" method="post">
-                    <label for="">聯絡姓名：</label>
-                    <input type="text" name="name" id="name" value=""><br/>
-                    <label for="">連絡信箱：</label>
-                    <input type="email" name="email" id="email" value=""><br/>
-                    <label for="">手機號碼：</label>
-                    <input type="text" name="phone" id="phone" value="">
-                </form>
-            </div>
-        </div>
-        <hr />
-        <div>
-            <h3>信用卡付款資訊</h3>
-            <div class="payment_info">
-                <form action="" method="post">
-                    <label for="">卡片號碼：</label>
-                    <input type="text" name="card_number" id="card_number"><br/>
-                    <label for="">過期時間：</label>
-                    <input type="text" name="expires_end" id="expires_end" value="MM / YY"><br/>
-                    <label for="">驗證密碼：</label>
-                    <input type="text" name="security_code" id="security_code" value="CVV">
-                    <h5>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</h5>
-                </form>
-            </div>
-        </div>
-        <hr />
-        <div>
-            <div class="billing_info">
-                <h4>總價：新台幣 <span id="amount">2000</span> 元</h4>
-                <button>確認訂購並付款</button>
-            </div>
-        </div>
+        <!--由Main組件渲染-->
     </main>
 {% endblock %}

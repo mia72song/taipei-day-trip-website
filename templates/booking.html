@@ -3,6 +3,11 @@
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" type="text/css" href={{ url_for("static", filename="css/booking.css") }}>
+{% endblock %}
+{% block content %}
+    <main>
+        <!--由Main組件渲染-->
+    </main>
     <script type="text/babel">
         class Main extends React.Component{
             state={
@@ -169,9 +174,4 @@
             })
         })
     </script>
-{% endblock %}
-{% block content %}
-    <main>
-        <!--由Main組件渲染-->
-    </main>
 {% endblock %}

@@ -43,14 +43,16 @@
         }
         let currentUser;
         let nextPathAfterLogin="/";
+        let currentUserPromise;
         // 頁面載入時，取得當前已登入的使用者資訊
         addEventListener("load", ()=>{
-            ajaxRequest("get").then(resp=>{
-                // console.log(resp.data);
+            currentUserPromise=ajaxRequest("get").then(resp=>{
+                // console.log("呼叫currentUserPromise");
                 if(resp.data){
                     currentUser=resp.data;
                     login.style.display="none";
                     logout.style.display="inline-block";
+                    return currentUser
                 }else{
                     login.style.display="inline-block";
                     logout.style.display="none";

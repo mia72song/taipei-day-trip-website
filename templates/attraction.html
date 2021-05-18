@@ -158,8 +158,8 @@
                 const {date, checked, price}=this.state;
                 const AvailableDate=this.checkAvailableDate();
                 if((Date.parse(date)).valueOf()>=(Date.parse(AvailableDate)).valueOf()){
+                    nextPathAfterLogin=window.location;
                     if(!currentUser){
-                        nextPathAfterLogin=window.location;
                         showPopUp();
                     }else{
                         const data={

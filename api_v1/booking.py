@@ -12,10 +12,10 @@ def dataFormatter(bookings):
         reservation={
             "booking_id":b[0],
             "attraction": {
-            "id": b[1],
-            "name": b[2],
-            "address": b[3],
-            "image": images[0]
+                "id": b[1],
+                "name": b[2],
+                "address": b[3],
+                "image": images[0]
             },
             "date": b[5],
             "time": b[6],

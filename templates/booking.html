@@ -21,8 +21,8 @@
             componentDidMount(){
                 // 載入當前用戶的資料
                 this.setState({
-                    name:currentUser.name,
-                    email:currentUser.email,
+                    name:this.props.user.name,
+                    email:this.props.user.email,
                 })
             }
             render(){
@@ -45,7 +45,7 @@
                 return(
                     <div id="main">
                         <div className="content">
-                            <h3>你好，<span id="username">{currentUser.name}</span>，待預訂的行程如下：</h3>
+                            <h3>你好，<span id="username">{this.props.user.name}</span>，待預訂的行程如下：</h3>
                         </div>
                         <div>
                             {booking_list}
@@ -56,11 +56,14 @@
                             <div className="contact_info">
                                 <form action="" method="post">
                                     <label for="">聯絡姓名：</label>
-                                    <input type="text" name="name" id="name" value={this.state.name} onChange={this.changeInputData("name")}/><br/>
+                                    <input type="text" name="name" id="name" 
+                                        value={this.state.name} onChange={this.changeInputData("name")}/><br/>
                                     <label for="">連絡信箱：</label>
-                                    <input type="email" name="email" id="email" value={this.state.email} onChange={this.changeInputData("email")}/><br/>
+                                    <input type="email" name="email" id="email" 
+                                        value={this.state.email} onChange={this.changeInputData("email")}/><br/>
                                     <label for="">手機號碼：</label>
-                                    <input type="text" name="phone" id="phone" value={this.state.phone} onChange={this.changeInputData("phone")}/>
+                                    <input type="text" name="phone" id="phone" 
+                                        value={this.state.phone} onChange={this.changeInputData("phone")}/>
                                 </form>
                             </div>
                         </div>
@@ -70,11 +73,14 @@
                             <div className="payment_info">
                                 <form action="" method="post">
                                     <label for="">卡片號碼：</label>
-                                    <input type="text" name="card_number" id="card_number" value={this.state.card_number} onChange={this.changeInputData("card_number")}/><br/>
+                                    <input type="text" name="card_number" id="card_number" 
+                                        value={this.state.card_number} onChange={this.changeInputData("card_number")}/><br/>
                                     <label for="">過期時間：</label>
-                                    <input type="text" name="expires_end" id="expires_end" placeholder="MM/YY" value={this.state.expires_end} onChange={this.changeInputData("expires_end")}/><br/>
+                                    <input type="text" name="expires_end" id="expires_end" placeholder="MM/YY" 
+                                        value={this.state.expires_end} onChange={this.changeInputData("expires_end")}/><br/>
                                     <label for="">驗證密碼：</label>
-                                    <input type="password" name="security_code" id="security_code" placeholder="CVV" value={this.state.security_code} onChange={this.changeInputData("security_code")}/>
+                                    <input type="password" name="security_code" id="security_code" placeholder="CVV" 
+                                        value={this.state.security_code} onChange={this.changeInputData("security_code")}/>
                                     <h5>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</h5>
                                 </form>
                             </div>
@@ -82,7 +88,9 @@
                         <hr style={hidden}/>
                         <div style={hidden}>
                             <div className="billing_info">
-                                <h3>總價：新台幣 <span id="amount" onChange={this.changeInputData("amount")}>{amount}</span> 元</h3>
+                                <h3>總價：新台幣
+                                    <span id="amount" onChange={this.changeInputData("amount")}>{amount}</span>
+                                元</h3>
                                 <button onClick={this.handleSubmit}>確認訂購並付款</button>
                             </div>
                         </div>
@@ -123,13 +131,19 @@
                                 <h3>台北一日遊：
                                     <span className="attraction_name">{data.attraction.name}</span>
                                 </h3>
-                                <label for="">日期：</label><span className="attraction_date">{data.date}</span><br/>
-                                <label for="">時間：</label><span className="attraction_time">{period}</span><br/>
-                                <label for="">費用：</label><span className="attraction_price">新台幣{data.price}元</span><br/>
-                                <label for="">地點：</label><span className="attraction_address">{data.attraction.address}</span>
+                                <label for="">日期：</label>
+                                <span className="attraction_date">{data.date}</span><br/>
+                                <label for="">時間：</label>
+                                <span className="attraction_time">{period}</span><br/>
+                                <label for="">費用：</label>
+                                <span className="attraction_price">新台幣{data.price}元</span><br/>
+                                <label for="">地點：</label>
+                                <span className="attraction_address">{data.attraction.address}</span>
                             </div>
                             <div className="del">
-                                <a onClick={this.handleDelete(data.booking_id)}><img src="../static/images/icon_delete.png" alt="" width="30px"/></a>
+                                <a onClick={this.handleDelete(data.booking_id)}>
+                                    <img src="../static/images/icon_delete.png" alt="" width="30px"/>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -163,14 +177,20 @@
         }
 
         addEventListener("load", ()=>{
-            fetch(`${window.origin}/api/booking`).then(response=>{
-                if(response.status===403){
-                    location.href="/";
-                }else{
-                    return response.json()
-                }
-            }).then(resp=>{
-                ReactDOM.render(<Main data={resp.data}/>, document.querySelector("main"))
+            currentUserPromise.then(userData=>{
+                fetch(`${window.origin}/api/booking`).then(response=>{
+                    // console.log("準備渲染Booking List");
+                    if(response.status===403){
+                        location.href="/";
+                    }else{
+                        return response.json()                        
+                    }
+                }).then(resp=>{
+                    ReactDOM.render(
+                        <Main data={resp.data} user={userData}/>, 
+                        document.querySelector("main")
+                    )
+                })
             })
         })
     </script>

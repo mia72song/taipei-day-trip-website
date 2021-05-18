@@ -4,6 +4,11 @@
     {{ super() }}
     <link rel="stylesheet" type="text/css" href={{ url_for("static", filename="css/attraction.css") }}>
     <script type="text/javascript" src={{ url_for("static", filename="js/attraction.js") }}></script>
+{% endblock %}
+{% block content %}
+    <main>
+        <!--由Main組件渲染-->
+    </main>
     <script type="text/babel">
         //Main組件：attraction主畫面
         class Main extends React.Component{  
@@ -154,6 +159,7 @@
                 const AvailableDate=this.checkAvailableDate();
                 if((Date.parse(date)).valueOf()>=(Date.parse(AvailableDate)).valueOf()){
                     if(!currentUser){
+                        nextPathAfterLogin=window.location;
                         showPopUp();
                     }else{
                         const data={
@@ -197,9 +203,4 @@
             ReactDOM.render(<Main/>, document.querySelector("main"));
         })
     </script>
-{% endblock %}
-{% block content %}
-    <main>
-        <!--由Main組件渲染-->
-    </main>
 {% endblock %}

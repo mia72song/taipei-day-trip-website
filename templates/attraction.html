@@ -17,8 +17,6 @@
                 const p=getDataById();
                 p.then(data=>{
                     this.setState(data["data"]);
-                }).catch(error=>{
-                    console.log(error);
                 })
             }
             render(){
@@ -178,7 +176,7 @@
                                     alert(resp.message);
                                 }
                             }
-                        });
+                        })
                     }
                 }else{
                     alert(`可供預約日期為明日(${AvailableDate})之後`);

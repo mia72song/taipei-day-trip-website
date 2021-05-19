@@ -162,15 +162,15 @@
                     }).then(response=>{
                         if(response.status===403){
                             location.href="/";
-                        }else{
+                        }else if(response.status==200){
                             return response.json();
+                        }else{
+                            console.log(response.json());
                         }
                     }).then(resp=>{
                         if(resp.ok){
                             location.reload();
                         }
-                    }).catch(error=>{
-                        console.log(error)
                     })
                 }
             }
@@ -182,8 +182,10 @@
                     // console.log("準備渲染Booking List");
                     if(response.status===403){
                         location.href="/";
-                    }else{
+                    }else if(response.status===200){
                         return response.json()                        
+                    }else{
+                        console.log(response.json());
                     }
                 }).then(resp=>{
                     ReactDOM.render(

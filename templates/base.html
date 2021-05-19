@@ -38,7 +38,7 @@
         const login=document.querySelector("#login");
         const logout=document.querySelector("#logout");
         
-        let nextPathAfterLogin="/"; // 透過點擊(登入/註冊 or 預定行程)，判斷登入成功後跳轉的路徑
+        let nextPathAfterLogin=window.location; // 透過點擊(登入/註冊 or 預定行程)，判斷登入成功後跳轉的路徑
         const showPopUp=()=>{
             popup_wrap.style.display="block";
             ReactDOM.render(<Popup/>, popup_wrap)

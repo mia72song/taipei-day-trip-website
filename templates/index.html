@@ -7,6 +7,23 @@
     <script type="text/javascript" src={{ url_for("static", filename="js/index.js") }}></script>
     <!-- Load Pubsub-js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pubsub-js/1.9.3/pubsub.min.js" integrity="sha512-ASNLdxh5Knd0ESqUQE2hvUbXxOmu0y27vVVibROAKRomo+R6ocykvh0m8tE9qMEfmeVbEyNL1M6FvvyRKyZIoQ==" crossorigin="anonymous"></script>
+{% endblock %}
+{% block content %}
+    <div class="banner">
+        <div class="title_wrap">
+            <div class="title">
+                <h2>輕鬆享受台北一日悠閒</h2>
+                <p>探索每個角落，體驗城市的深度旅遊行程</p>
+                <div id="search_form">
+                    <!--由Search組件渲染-->
+                </div>                
+            </div>
+            <img src="../static/images/welcome 1.png" alt="">
+        </div>
+    </div>
+    <main>
+        <!--由Databox組件渲染-->
+    </main>
     <script type="text/babel">
         class Databox extends React.Component{
             state={
@@ -144,21 +161,4 @@
             ReactDOM.render(<Databox/>, document.querySelector("main"));
         })
     </script>
-{% endblock %}
-{% block content %}
-    <div class="banner">
-        <div class="title_wrap">
-            <div class="title">
-                <h2>輕鬆享受台北一日悠閒</h2>
-                <p>探索每個角落，體驗城市的深度旅遊行程</p>
-                <div id="search_form">
-                    <!--由Search組件渲染-->
-                </div>                
-            </div>
-            <img src="../static/images/welcome 1.png" alt="">
-        </div>
-    </div>
-    <main>
-        <!--由Databox組件渲染-->
-    </main>
 {% endblock %}

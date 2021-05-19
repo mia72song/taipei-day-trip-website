@@ -4,6 +4,11 @@
     {{ super() }}
     <link rel="stylesheet" type="text/css" href={{ url_for("static", filename="css/attraction.css") }}>
     <script type="text/javascript" src={{ url_for("static", filename="js/attraction.js") }}></script>
+{% endblock %}
+{% block content %}
+    <main>
+        <!--由Main組件渲染-->
+    </main>
     <script type="text/babel">
         //Main組件：attraction主畫面
         class Main extends React.Component{  
@@ -101,10 +106,10 @@
         class Booking extends React.Component{
             state={
                 date:"",
-                checked:"am", // or "pm"
+                checked:"morning", // or "afternoon"
                 price:{
-                    am:2000,
-                    pm:2500
+                    morning:2000,
+                    afternoon:2500
                 }
             }
             // 顯示明日的日期，可以預約的日期自「明日」開始
@@ -135,12 +140,12 @@
                             <input type="date" name="date" id="date" value={date} onChange={this.dateChange}/><br/>
                             <label for="">選擇時段：</label> 
                             <span className="radio_container">
-                                <input type="radio" name="period" id="am" checked={checked==="am"} onChange={this.handelCheck}/>
-                                <label for="am">上半天</label>
+                                <input type="radio" name="period" id="morning" checked={checked==="morning"} onChange={this.handelCheck}/>
+                                <label for="morning">上半天</label>
                             </span>
                             <span className="radio_container">
-                                <input type="radio" name="period" id="pm" checked={checked==="pm"} onChange={this.handelCheck}/>
-                                <label for="pm">下半天</label>
+                                <input type="radio" name="period" id="afternoon" checked={checked==="afternoon"} onChange={this.handelCheck}/>
+                                <label for="afternoon">下半天</label>
                             </span><br/>                        
                             <label for="">導覽費用：</label>新台幣<span>{price[checked]}</span>元<br/>
                             <button type="submit">開始預訂行程</button>
@@ -153,10 +158,28 @@
                 const {date, checked, price}=this.state;
                 const AvailableDate=this.checkAvailableDate();
                 if((Date.parse(date)).valueOf()>=(Date.parse(AvailableDate)).valueOf()){
-                    console.log("景點id："+this.props.attraction_id);
-                    console.log("日期："+date);
-                    console.log("時段："+checked);
-                    console.log("費用："+price[checked]);
+                    nextPathAfterLogin=window.location;
+                    if(!currentUser){
+                        showPopUp();
+                    }else{
+                        const data={
+                            attractionId:this.props.attraction_id,
+                            date,
+                            time:checked,
+                            price:price[checked]
+                        };
+                        createBooking(data).then(resp=>{
+                            if(resp.ok){
+                                location.href="/booking";
+                            }else if(resp.error){
+                                if(!resp.message.login){
+                                    showPopUp();
+                                }else{
+                                    alert(resp.message);
+                                }
+                            }
+                        });
+                    }
                 }else{
                     alert(`可供預約日期為明日(${AvailableDate})之後`);
                 }
@@ -180,9 +203,4 @@
             ReactDOM.render(<Main/>, document.querySelector("main"));
         })
     </script>
-{% endblock %}
-{% block content %}
-    <main>
-        <!--由Main組件渲染-->
-    </main>
 {% endblock %}

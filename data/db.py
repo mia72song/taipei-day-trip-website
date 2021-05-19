@@ -79,7 +79,7 @@ class Mydb:
         sql = f"SELECT id, username, email, password FROM users WHERE email='{email}'"
         self.cur.execute(sql)
         data = self.cur.fetchone()
-        print(data)
+        # print(data)
         if data and check_password_hash(data[3], password):
             return data[0], data[1], data[2]
         else:
@@ -92,6 +92,36 @@ class Mydb:
         self.conn.commit()
         print("密碼已更新")
 
+    def createBooking(self, aid, date, period, price, uid):
+        sql=f"INSERT INTO bookings (date, period, price, attraction_id, user_id) VALUES ('{date}', '{period}', {price}, {aid}, {uid})"
+        self.cur.execute(sql)
+        self.conn.commit()
+        print("預定行程已新增")
+
+    def getBookingsByUserID(self, uid):
+        sql=f'''SELECT b.id,
+            a.id, a.name, a.address, a.images, 
+            b.date, b.period, b.price
+            FROM bookings AS b
+            INNER JOIN attractions as a ON b.attraction_id=a.id 
+            WHERE b.user_id={uid} and b.is_del=0
+            ORDER BY create_datetime desc'''
+        self.cur.execute(sql)
+        data = self.cur.fetchall()
+        return data
+
+    def fakeDelBooking(self, bid):
+        sql=f"UPDATE bookings SET is_del=1 WHERE id={bid}"
+        self.cur.execute(sql)
+        self.conn.commit()
+        print(f"編號：{bid} 已執行假刪除")
+
+    def delBookingById(self, bid, uid):
+        sql=f"DELETE FROM bookings WHERE id={bid} and user_id={uid}"
+        self.cur.execute(sql)
+        self.conn.commit()
+        print(f"編號：{bid} 已刪除")
+
     def __del__(self):
         self.cur.close()
         self.conn.close()
@@ -99,7 +129,5 @@ class Mydb:
 
 if __name__ == "__main__":
     mydb = Mydb()
-    mydb.updatePassword("test@test.com", "test")
-    data = mydb.getUser("test@test.com", "test")
-    print(data)
+    data = mydb.getBookingsByUserID(1)
     del mydb

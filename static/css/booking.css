@@ -1,17 +1,23 @@
 main{
-    margin:54px auto;
+    margin:54px auto 30px auto;
     width: 1200px;
 }
-main>div{
+#main>div{
     width: 85%;
     margin:0 auto;
+}
+#main>div:not(.content){
     padding:30px 0;
 }
+.content{
+    padding-top: 30px;
+}
 .booking_info{
-    padding: 15px 5px;
+    padding: 10px 5px;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    position: relative;
 }
 .img_div{
     flex:none;
@@ -38,18 +44,17 @@ main>div{
 .del{
     flex:none;
     width: 30px;
-    position: relative;
 }
 .contact_info{
-    padding: 15px 5px;
-    line-height: 2.5;
+    padding: 18px 5px 5px 5px;
+    line-height: 2.6;
 }
 .payment_info{
-    padding: 15px 5px;
-    line-height: 2.5;
+    padding: 18px 5px 5px 5px;
+    line-height: 2.6;
 }
 .billing_info{
-    padding: 15px 5px;
+    padding: 15px 5px 5px 5px;
     line-height: 2.5;
     text-align: end;
 }
@@ -70,6 +75,11 @@ button{
     font-weight: bold;
     margin-top: 10px;
 }
+hr{
+    height: 1px; 
+    border: none; 
+    background-color: #E8E8E8;
+}
 /*RWD*/
 @media (max-width:1200px){
     main{
@@ -80,7 +90,7 @@ button{
     main{
         width: 95%;
     }
-    main>div{
+    #main>div{
         width: 100%;
     }
     .img_div{
@@ -89,10 +99,13 @@ button{
     .detail{
         padding: 15px;
     }
+    .del{
+        vertical-align: bottom;
+    }
     .del img{
         position: absolute;
-        right: 5px;
-        bottom: -30px;;
+        bottom: 0;
+        right:0;
     }
     .contact_info{
         padding:15px;

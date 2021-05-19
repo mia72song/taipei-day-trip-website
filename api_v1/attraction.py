@@ -6,20 +6,11 @@ from . import api
 
 # 將已取得資料庫數據，整理成dict格式
 def dictFormatter(result):
+    cols = ["id", "name", "category", "description", "address", "transport", "mrt", "latitude", "longitude", "images"]
+    data_dict = dict(zip(cols, result))
     images = result[9].split(" ")
-    data = {
-        "id":result[0],
-        "name":result[1],
-        "category":result[2],
-        "description":result[3],
-        "address":result[4],
-        "transport":result[5],
-        "mrt":result[6],
-        "latitude":result[7],
-        "longitude":result[8],
-        "images":images[:len(images)-1]
-    }
-    return data
+    data_dict["images"] = images[:-1]
+    return data_dict
 
 # 取得景點資料列表api
 @api.route("/attractions")
@@ -49,8 +40,8 @@ def get_attractions():
                 else:
                     nextPage = None
                 for r in results :
-                    data = dictFormatter(r)
-                    attractions.append(data)
+                    data_dict = dictFormatter(r)
+                    attractions.append(data_dict)
             else:
                 nextPage = None
             
@@ -90,8 +81,8 @@ def get_attractions():
                 nextPage = None
             
             for r in results:
-                spot = dictFormatter(r)
-                attractions.append(spot)
+                data_dict = dictFormatter(r)
+                attractions.append(data_dict)
         else:
             nextPage = None
         
@@ -120,8 +111,8 @@ def get_attraction(attractionid):
         mydb = Mydb()
         result = mydb.getDataById(attractionid)
         if result:
-            data = dictFormatter(result)
-            body = json.dumps({"data":data}, ensure_ascii=False, indent=2)
+            data_dict = dictFormatter(result)
+            body = json.dumps({"data":data_dict}, ensure_ascii=False, indent=2)
             status_code = 200
         else:
             body = json.dumps({

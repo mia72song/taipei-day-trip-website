@@ -14,3 +14,25 @@ function getDataById(){
     }
     return p
 }
+
+// 向後端預定新的行程
+function createBooking(data){
+    const url=`${window.origin}/api/booking`;
+    let p=fetch(url, {
+        method:"post", 
+        credentials:"include",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify(data)
+    }).then(response=>{
+        if(response.status!==500){
+            return response.json()
+        }else{
+            console.log(response.json())
+        }
+    }).catch(error=>{
+        console.log(error)
+    });
+    return p
+}

@@ -17,6 +17,7 @@ main{
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    position: relative;
 }
 .img_div{
     flex:none;
@@ -43,7 +44,7 @@ main{
 .del{
     flex:none;
     width: 30px;
-    position: relative;
+    text-align:right;
 }
 .contact_info{
     padding: 18px 5px 5px 5px;
@@ -99,10 +100,13 @@ hr{
     .detail{
         padding: 15px;
     }
+    .del{
+        vertical-align: bottom;
+    }
     .del img{
         position: absolute;
-        right: 5px;
-        bottom: -5px;
+        bottom: 0;
+        right: 10px;
     }
     .contact_info{
         padding:15px;

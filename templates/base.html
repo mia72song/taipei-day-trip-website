@@ -37,14 +37,16 @@
         const popup_wrap=document.querySelector("#popup_wrap");
         const login=document.querySelector("#login");
         const logout=document.querySelector("#logout");
+        
+        let nextPathAfterLogin="/"; // 透過點擊(登入/註冊 or 預定行程)，判斷登入成功後跳轉的路徑
         const showPopUp=()=>{
             popup_wrap.style.display="block";
             ReactDOM.render(<Popup/>, popup_wrap)
         }
-        let currentUser;
-        let nextPathAfterLogin="/";
-        let currentUserPromise;
+        
         // 頁面載入時，取得當前已登入的使用者資訊
+        let currentUser;
+        let currentUserPromise;
         addEventListener("load", ()=>{
             currentUserPromise=ajaxRequest("get").then(resp=>{
                 // console.log("呼叫currentUserPromise");
@@ -59,20 +61,12 @@
                 }
             })
         })
-        // 點擊登出
-        logout.addEventListener("click", ()=>{
-            ajaxRequest("delete").then(resp=>{
-                if(resp.ok){
-                    location.reload();
-                }
-            })
-        })
-        // 點擊跳窗登入/註冊畫面
+        // 點擊「登入/註冊」
         login.addEventListener("click", ()=>{
-            nextPathAfterLogin="/";
+            nextPathAfterLogin=window.location;
             showPopUp();
         })
-        // 點擊預定行程
+        // 點擊「預定行程」
         document.querySelector("#create_booking").addEventListener("click", ()=>{
             if(currentUser){
                 location.href="/booking";
@@ -87,7 +81,15 @@
                 popup_wrap.style.display="none";
             }
         })
-        
+        // 點擊登出
+        logout.addEventListener("click", ()=>{
+            ajaxRequest("delete").then(resp=>{
+                if(resp.ok){
+                    location.reload();
+                }
+            })
+        })
+
         // 登入/註冊的跳窗組件
         class Popup extends React.Component{
             state={
@@ -155,7 +157,7 @@
                 let p=ajaxRequest('patch', data);
                 p.then(resp=>{
                     if(resp.ok){
-                        location.href=nextPathAfterLogin;
+                        location.href=nextPathAfterLogin; // 由點擊的按紐判斷登入後跳轉的路徑
                     }else if(resp.error){
                         this.setState({message:resp.message});
                     }

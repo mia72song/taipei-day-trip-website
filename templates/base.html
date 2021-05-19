@@ -45,13 +45,12 @@
         }
         
         // 頁面載入時，取得當前已登入的使用者資訊
-        let currentUser;
         let currentUserPromise;
         addEventListener("load", ()=>{
             currentUserPromise=ajaxRequest("get").then(resp=>{
                 // console.log("呼叫currentUserPromise");
                 if(resp.data){
-                    currentUser=resp.data;
+                    const currentUser=resp.data;
                     login.style.display="none";
                     logout.style.display="inline-block";
                     return currentUser
@@ -68,12 +67,14 @@
         })
         // 點擊「預定行程」
         document.querySelector("#create_booking").addEventListener("click", ()=>{
-            if(currentUser){
-                location.href="/booking";
-            }else{
-                nextPathAfterLogin="/booking";
-                showPopUp();
-            }
+            currentUserPromise.then(currentUser=>{
+                if(currentUser){
+                    location.href="/booking";
+                }else{
+                    nextPathAfterLogin="/booking";
+                    showPopUp();
+                }
+            })
         })
         // 點擊框外，關閉登入/註冊畫面
         popup_wrap.addEventListener("click", (eObj)=>{

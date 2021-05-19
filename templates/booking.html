@@ -27,7 +27,6 @@
             }
             render(){
                 // console.log(this.props.data);
-                // console.log(currentUser)
                 let booking_list;
                 let amount=0;
                 let hidden;
@@ -177,7 +176,7 @@
         }
 
         addEventListener("load", ()=>{
-            currentUserPromise.then(userData=>{
+            currentUserPromise.then(currentUser=>{
                 fetch(`${window.origin}/api/booking`).then(response=>{
                     // console.log("準備渲染Booking List");
                     if(response.status===403){
@@ -189,7 +188,7 @@
                     }
                 }).then(resp=>{
                     ReactDOM.render(
-                        <Main data={resp.data} user={userData}/>, 
+                        <Main data={resp.data} user={currentUser}/>, 
                         document.querySelector("main")
                     )
                 })

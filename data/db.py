@@ -117,10 +117,20 @@ class Mydb:
         print(f"編號：{bid} 已執行假刪除")
 
     def delBookingById(self, bid, uid):
-        sql=f"DELETE FROM bookings WHERE id={bid} and user_id={uid}"
+        paid = self.booking_paid(bid)
+        if paid:
+            print(f"編號：{bid} 已付款完成，不可刪除")
+        else:
+            sql=f"DELETE FROM bookings WHERE id={bid} and user_id={uid} and order_id IS NULL"
+            self.cur.execute(sql)
+            self.conn.commit()
+            print(f"編號：{bid} 已刪除")
+
+    def booking_paid(self, bid):
+        sql=f"SELECT * FROM bookings WHERE order_id IS NOT NULL and id={bid}"
         self.cur.execute(sql)
-        self.conn.commit()
-        print(f"編號：{bid} 已刪除")
+        data = self.cur.fetchone()
+        return data
 
     def __del__(self):
         self.cur.close()
@@ -129,5 +139,6 @@ class Mydb:
 
 if __name__ == "__main__":
     mydb = Mydb()
-    data = mydb.getBookingsByUserID(1)
+    data = mydb.booking_paid(34)
+    print(data)
     del mydb

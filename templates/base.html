@@ -98,14 +98,10 @@
             }
             render(){
                 let form=<LoginForm/>;
-                let hint=(
-                    <p>還沒有帳戶？ <a onClick={this.changeFormType}>點此註冊</a></p>
-                )
+                let hint=<p>還沒有帳戶？ <a onClick={this.changeFormType}>點此註冊</a></p>;
                 if(!this.state.login){
                     form=<SignupForm/>;
-                    hint=(
-                        <p>已經有帳戶了？ <a onClick={this.changeFormType}>點此登入</a></p>
-                    )
+                    hint=<p>已經有帳戶了？ <a onClick={this.changeFormType}>點此登入</a></p>;
                 }
                 return(
                     <div id="popup">

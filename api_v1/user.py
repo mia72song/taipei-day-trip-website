@@ -31,7 +31,7 @@ def signup():
                 }), 400
             )
         mydb = Mydb()
-        if mydb.email_exists(signup_data["email"]):
+        if mydb.emailExists(signup_data["email"]):
             return make_response(
                 jsonify({
                     "error": True,

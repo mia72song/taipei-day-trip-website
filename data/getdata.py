@@ -32,7 +32,7 @@ for d in data:
     
     mydb = Mydb()
     try:
-        mydb.insertAll(aid, name, category, description, address, transport, mrt, latitude, longitude, images_string)
+        mydb.insertAttractions(aid, name, category, description, address, transport, mrt, latitude, longitude, images_string)
         count+=1
     except Exception as e:
         print(e)

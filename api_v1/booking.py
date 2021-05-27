@@ -30,7 +30,7 @@ def get_booking_list():
     if session.get("user_info"):
         uid = session.get("user_info")[0]
         mydb = Mydb()
-        bookings = mydb.getBookingsByUserID(uid)
+        bookings = mydb.getBookingsByUserId(uid)
         if bookings:
             data_list = dataFormatter(bookings)
             return jsonify({"data":data_list}), 200

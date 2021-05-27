@@ -87,7 +87,7 @@
                                 <h3>總價：新台幣
                                     <span id="amount">{amount}</span>
                                 元</h3>
-                                <button type="submit" id="submitBtn" onClick={this.handleSubmit}>確認訂購並付款</button>
+                                <button id="submitBtn" onClick={this.handleSubmit}>確認訂購並付款</button>
                             </div>
                         </div>
                     </form>
@@ -117,7 +117,7 @@
                     bids.push(d.booking_id);
                     price+=d.price;
                 };
-                if(bids===[] || price===0){ return };
+                if(bids===[] || price===0){return};
 
                 // 確認是否可以 getPrime
                 const tappayStatus=TPDirect.card.getTappayFieldsStatus();
@@ -157,12 +157,6 @@
             render(){
                 // console.log(this.props.data);
                 const data=this.props.data;
-                let period;
-                if(data.time==="morning"){
-                    period="早上 9 點到下午 4 點"
-                }else{
-                    period="下午 2 點到晚上 9 點"
-                }
                 return(
                     <div>
                         <div className="booking_info">
@@ -176,7 +170,7 @@
                                 <label for="">日期：</label>
                                 <span className="attraction_date">{data.date}</span><br/>
                                 <label for="">時間：</label>
-                                <span className="attraction_time">{period}</span><br/>
+                                <span className="attraction_time">{data.time==="morning"? "早上 9 點到下午 4 點":"下午 2 點到晚上 9 點"}</span><br/>
                                 <label for="">費用：</label>
                                 <span className="attraction_price">新台幣{data.price}元</span><br/>
                                 <label for="">地點：</label>

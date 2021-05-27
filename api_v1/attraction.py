@@ -32,7 +32,7 @@ def get_attractions():
         
         start_index = pageSize*page
         try:
-            results = mydb.getDataByKeyword(keyword, start_index, pageSize)
+            results = mydb.getAttractionsByKeyword(keyword, start_index, pageSize)
             attractions = []
             if results :
                 if len(results)==pageSize:
@@ -72,7 +72,7 @@ def get_attractions():
 
     start_index = pageSize*page
     try:
-        results =  mydb.getDataByPage(start_index, pageSize)
+        results =  mydb.getAttractionsByPage(start_index, pageSize)
         attractions = []
         if results :
             if len(results)==pageSize :
@@ -109,7 +109,7 @@ def get_attraction(attractionid):
     status_code = 0
     try:
         mydb = Mydb()
-        result = mydb.getDataById(attractionid)
+        result = mydb.getAttractionById(attractionid)
         if result:
             data_dict = dictFormatter(result)
             body = json.dumps({"data":data_dict}, ensure_ascii=False, indent=2)

@@ -145,8 +145,8 @@
                         }
                     };
                     createOrder(data).then(resp=>{
-                        if(resp.ok){
-                            console.log(resp.message);
+                        if(resp.data){
+                            console.log(resp.data);
                         }
                     })
                 })

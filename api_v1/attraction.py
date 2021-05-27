@@ -1,7 +1,7 @@
 from flask import make_response, request, redirect
 import json
 
-from data.db import Mydb
+from model.db import Mydb
 from . import api
 
 # 將已取得資料庫數據，整理成dict格式

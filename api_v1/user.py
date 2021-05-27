@@ -1,6 +1,6 @@
 from flask import request, jsonify, make_response, session
 
-from data.db import Mydb
+from model.db import Mydb
 from . import api
 
 #取得當前已登入的使用者資訊api

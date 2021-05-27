@@ -1,7 +1,7 @@
 from flask import make_response, request, jsonify, session
 import json
 
-from data.db import Mydb
+from model.db import Mydb
 from . import api
 
 def dataFormatter(bookings):

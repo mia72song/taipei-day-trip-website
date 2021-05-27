@@ -1,1 +1,1 @@
-from . import db
+from . import db, data_formatter

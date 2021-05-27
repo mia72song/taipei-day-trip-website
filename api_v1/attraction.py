@@ -2,15 +2,8 @@ from flask import make_response, request, redirect
 import json
 
 from model.db import Mydb
+from model.data_formatter import attractionsFormatter
 from . import api
-
-# 將已取得資料庫數據，整理成dict格式
-def dictFormatter(result):
-    cols = ["id", "name", "category", "description", "address", "transport", "mrt", "latitude", "longitude", "images"]
-    data_dict = dict(zip(cols, result))
-    images = result[9].split(" ")
-    data_dict["images"] = images[:-1]
-    return data_dict
 
 # 取得景點資料列表api
 @api.route("/attractions")
@@ -40,7 +33,7 @@ def get_attractions():
                 else:
                     nextPage = None
                 for r in results :
-                    data_dict = dictFormatter(r)
+                    data_dict = attractionsFormatter(r)
                     attractions.append(data_dict)
             else:
                 nextPage = None
@@ -81,7 +74,7 @@ def get_attractions():
                 nextPage = None
             
             for r in results:
-                data_dict = dictFormatter(r)
+                data_dict = attractionsFormatter(r)
                 attractions.append(data_dict)
         else:
             nextPage = None
@@ -111,7 +104,7 @@ def get_attraction(attractionid):
         mydb = Mydb()
         result = mydb.getAttractionById(attractionid)
         if result:
-            data_dict = dictFormatter(result)
+            data_dict = attractionsFormatter(result)
             body = json.dumps({"data":data_dict}, ensure_ascii=False, indent=2)
             status_code = 200
         else:

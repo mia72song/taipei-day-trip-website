@@ -1,7 +1,5 @@
 import pymysql
 import os
-import datetime
-import time
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 load_dotenv()
@@ -154,6 +152,18 @@ class Mydb:
             self.conn.commit()
         print("訂單編號{number}中繼表建立完成")
 
+    def getBookingsByOrderNumber(self, uid, number):
+        sql=f'''SELECT a.name, a.address, a.images,
+            b.date, b.period, b.price
+            FROM bookings AS b
+            INNER JOIN attractions AS a ON b.attraction_id=a.id
+            WHERE b.user_id={uid} and paid_order_number={number}
+            ORDER BY create_datetime desc
+        '''
+        self.cur.execute(sql)
+        data = self.cur.fetchall
+        return data
+
     def __del__(self):
         self.cur.close()
         self.conn.close()
@@ -161,5 +171,5 @@ class Mydb:
 
 if __name__ == "__main__":
     mydb = Mydb()
-    print (datetime.datetime.now())
+    
     del mydb

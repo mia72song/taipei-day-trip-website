@@ -4,8 +4,10 @@ import requests
 import json
 
 from model.db import Mydb
+from model.data_formatter import bookingsFormatter
 from . import api
 
+# TapPay
 def pay_by_prime(number, prime, amout, contact):
     url = "https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
     partner_key = "partner_ktQgBPDeaOKAThHqAd3p16aBM9hMmqMqjcZKLPaUI2czNXeIYPvXMtGK"
@@ -38,7 +40,7 @@ def pay_by_prime(number, prime, amout, contact):
     else:
         return None
 
-#建立新的訂單，並完成付款
+# 建立新的訂單，並完成付款
 @api.route("/orders", methods=["POST"])
 def create_order():
     if not session.get("user_info"):
@@ -74,7 +76,17 @@ def create_order():
     else:
         return jsonify({"error": True, "message":"無資料"}), 500
 
-#根據訂單編號取得訂單資訊
+# 根據訂單編號取得訂單資訊
 @api.route("/order/<orderNumber>")
 def get_order(orderNumber):
-    pass
+    if not session.get("user_info"):
+        return jsonify({"error": True, "message":{"login":False}}), 403
+    
+    uid = session.get("user_info")[0]
+    mydb = Mydb()
+    paid_bookings = mydb.getBookingsByOrderNumber(uid, orderNumber)
+    if paid_bookings:
+        data_list = bookingsFormatter(paid_bookings)
+        return jsonify({"data":data_list}), 200
+    else:
+        return jsonify({"data":None}), 200

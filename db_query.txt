@@ -1,0 +1,35 @@
+﻿CREATE TABLE bookings (
+id INT PRIMARY KEY AUTO_INCREMENT,
+date VARCHAR(10) NOT NULL,
+period VARCHAR(64) NOT NULL,
+price INT NOT NULL,
+attraction_id INT NOT NULL,
+user_id INT NOT NULL,
+create_datetime datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+is_del TINYINT(1) NOT NULL DEFAULT 0,
+paid_order_number BIGINT,
+update_datetime datetime,
+FOREIGN KEY (attraction_id) REFERENCES attractions(id),
+FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+ALTER TABLE bookings ADD FOREIGN KEY (paid_order_number) REFERENCES orders(number);
+
+CREATE TABLE orders (
+number BIGINT PRIMARY KEY,
+prime VARCHAR(67) NOT NULL UNIQUE,
+amount INT NOT NULL,
+contact_name varchar(125) NOT NULL,
+contact_email varchar(256) NOT NULL,
+contact_phone varchar(10) NOT NULL,
+create_datetime datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+paid TINYINT(1) NOT NULL DEFAULT 0,
+update_datetime datetime
+);
+
+CREATE TABLE booking_to_order (
+booking_id INT NOT NULL,
+order_number BIGINT NOT NULL,
+FOREIGN KEY (booking_id) REFERENCES bookings(id),
+FOREIGN KEY (order_number) REFERENCES orders(number)
+);

@@ -39,6 +39,7 @@ def pay_by_prime(number, prime, amout, contact):
     else:
         return None
 
+# 將由資料庫取得的預定行程列表(bookings)，整理成list格式
 def paidBookingsFormatter(bookings):
     data_list=[]
     for b in bookings:

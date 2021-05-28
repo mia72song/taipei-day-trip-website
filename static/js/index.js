@@ -1,4 +1,5 @@
 let ajaxRequested=false;// 監測是否正在發出ajax請求
+
 function getDataByPage(page){
     if(!ajaxRequested){
         ajaxRequested=true;

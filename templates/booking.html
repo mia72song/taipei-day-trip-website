@@ -3,6 +3,9 @@
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" type="text/css" href={{ url_for("static", filename="css/booking.css") }}>
+    <script type="text/javascript" src={{ url_for("static", filename="js/booking.js") }}></script>
+    <script src="https://js.tappaysdk.com/tpdirect/v5.7.0"></script>
+    <script type="text/javascript" src={{ url_for("static", filename="js/tappay.js") }}></script>
 {% endblock %}
 {% block content %}
     <main>
@@ -13,10 +16,7 @@
             state={
                 name:"",
                 email:"",
-                phone:"",
-                card_number:"",
-                expires_end:"",
-                security_code:""
+                phone:""
             }
             componentDidMount(){
                 // 載入當前用戶的資料
@@ -24,10 +24,11 @@
                     name:this.props.user.name,
                     email:this.props.user.email,
                 })
+                // 設定TapPay的參數及表單樣式
+                loadTPDirect();
             }
             render(){
                 // console.log(this.props.data);
-                // console.log(currentUser)
                 let booking_list;
                 let amount=0;
                 let hidden;
@@ -43,7 +44,7 @@
                     booking_list=<p>目前沒有任何待預訂的行程</p>
                 }
                 return(
-                    <div id="main">
+                    <div className="booking_form">
                         <div className="content">
                             <h3>你好，<span id="username">{this.props.user.name}</span>，待預訂的行程如下：</h3>
                         </div>
@@ -54,60 +55,105 @@
                         <div style={hidden}>
                             <h3>您的聯絡資訊</h3>
                             <div className="contact_info">
-                                <form action="" method="post">
-                                    <label for="">聯絡姓名：</label>
-                                    <input type="text" name="name" id="name" 
-                                        value={this.state.name} onChange={this.changeInputData("name")}/><br/>
-                                    <label for="">連絡信箱：</label>
-                                    <input type="email" name="email" id="email" 
-                                        value={this.state.email} onChange={this.changeInputData("email")}/><br/>
-                                    <label for="">手機號碼：</label>
-                                    <input type="text" name="phone" id="phone" 
-                                        value={this.state.phone} onChange={this.changeInputData("phone")}/>
-                                </form>
+                                <label for="">聯絡姓名：</label>
+                                <input type="text" name="name" id="name" 
+                                    value={this.state.name} onChange={this.changeInputData("name")}/><br/>
+                                <label for="">連絡信箱：</label>
+                                <input type="email" name="email" id="email" 
+                                    value={this.state.email} onChange={this.changeInputData("email")}/><br/>
+                                <label for="">手機號碼：</label>
+                                <input type="text" name="phone" id="phone" placeholder="09xxxxxxxx，共10碼" 
+                                    value={this.state.phone} onChange={this.changeInputData("phone")}/>
                             </div>
                         </div>
                         <hr style={hidden}/>
                         <div style={hidden}>
                             <h3>信用卡付款資訊</h3>
                             <div className="payment_info">
-                                <form action="" method="post">
-                                    <label for="">卡片號碼：</label>
-                                    <input type="text" name="card_number" id="card_number" 
-                                        value={this.state.card_number} onChange={this.changeInputData("card_number")}/><br/>
-                                    <label for="">過期時間：</label>
-                                    <input type="text" name="expires_end" id="expires_end" placeholder="MM/YY" 
-                                        value={this.state.expires_end} onChange={this.changeInputData("expires_end")}/><br/>
-                                    <label for="">驗證密碼：</label>
-                                    <input type="password" name="security_code" id="security_code" placeholder="CVV" 
-                                        value={this.state.security_code} onChange={this.changeInputData("security_code")}/>
-                                    <h5>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</h5>
-                                </form>
+                                <label for="">卡片號碼：</label>
+                                <div class="tpfield" id="card-number"></div>
+                                <br/>
+                                <label for="">過期時間：</label>
+                                <div class="tpfield" id="card-expiration-date"></div>
+                                <br/>
+                                <label for="">驗證密碼：</label>
+                                <div class="tpfield" id="card-ccv"></div>
+                                <h5>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</h5>
                             </div>
                         </div>
                         <hr style={hidden}/>
                         <div style={hidden}>
                             <div className="billing_info">
                                 <h3>總價：新台幣
-                                    <span id="amount" onChange={this.changeInputData("amount")}>{amount}</span>
+                                    <span id="amount">{amount}</span>
                                 元</h3>
-                                <button onClick={this.handleSubmit}>確認訂購並付款</button>
+                                <button id="submitBtn" onClick={this.handleSubmit}>確認訂購並付款</button>
                             </div>
                         </div>
                     </div>
                 )
             }
             changeInputData=(dataType)=>{
-                return ()=>{
-                    console.log(dataType);
+                return (eObj)=>{
+                    this.setState({[dataType]:eObj.currentTarget.value});
                 }
             }
-            handleSubmit=()=>{
-                let amount_text=document.querySelector("#amount").textContent;
-                if(amount_text==="0"){
+            handleSubmit=(eObj)=>{
+                eObj.preventDefault();
+                // 輸入資料格式驗證
+                const {name, email, phone}=this.state;
+                if(name==="" || email==="" || phone===""){
+                    alert("聯絡資料未填寫");
                     return
                 }
-                console.log("Submit")
+                if(!phone.match(/^09\d{8}$/)){
+                    alert("手機號碼格式錯誤");
+                    return
+                }
+                // 無預定行程及金額為0，不提交
+                let bids=[];
+                let price=0;
+                for(let d of this.props.data){
+                    bids.push(d.booking_id);
+                    price+=d.price;
+                };
+                if(bids===[] || price===0){return};
+
+                // 確認是否可以 getPrime
+                const tappayStatus=TPDirect.card.getTappayFieldsStatus();
+                if (tappayStatus.canGetPrime === false) {
+                    // console.log('can not get prime');
+                    alert("信用卡資料有誤");
+                    return
+                }
+                // Get prime
+                TPDirect.card.getPrime((result) => {
+                    if (result.status !== 0) {
+                        console.log('get prime error ' + result.msg);
+                        alert("信用卡資料有誤");
+                        return
+                    }
+                    // console.log('get prime 成功，prime: ' + result.card.prime);
+                    const data={
+                        prime:result.card.prime,
+                        orders:bids,
+                        price,
+                        contact:{
+                            name:this.state.name,
+                            email:this.state.email,
+                            phone:this.state.phone
+                        }
+                    };
+                    createOrder(data).then(resp=>{
+                        if(resp.data.payment.status===0){
+                            location.href=`${window.origin}/thankyou?number=${resp.data.number}`;
+                            // console.log(resp.data.number);
+                        }else if(resp.error){
+                            alert(resp.message);
+                            location.reload();
+                        }
+                    })
+                })
             }
         }
         // 預訂行程列表組件
@@ -115,12 +161,6 @@
             render(){
                 // console.log(this.props.data);
                 const data=this.props.data;
-                let period;
-                if(data.time==="morning"){
-                    period="上午9點到12點"
-                }else{
-                    period="下午2點到5點"
-                }
                 return(
                     <div>
                         <div className="booking_info">
@@ -134,7 +174,7 @@
                                 <label for="">日期：</label>
                                 <span className="attraction_date">{data.date}</span><br/>
                                 <label for="">時間：</label>
-                                <span className="attraction_time">{period}</span><br/>
+                                <span className="attraction_time">{data.time==="morning"? "早上 9 點到下午 4 點":"下午 2 點到晚上 9 點"}</span><br/>
                                 <label for="">費用：</label>
                                 <span className="attraction_price">新台幣{data.price}元</span><br/>
                                 <label for="">地點：</label>
@@ -151,47 +191,24 @@
             }
             handleDelete=(bid)=>{
                 return ()=>{
-                    // console.log(bid)
-                    fetch(`${window.origin}/api/booking`, {
-                        method:"delete",
-                        credentials:"include",
-                        headers:{
-                            "Content-Type":"application/json"
-                        },
-                        body:JSON.stringify({bid})
-                    }).then(response=>{
-                        if(response.status===403){
-                            location.href="/";
-                        }else{
-                            return response.json();
-                        }
-                    }).then(resp=>{
+                    delBooking({bid}).then(resp=>{
                         if(resp.ok){
                             location.reload();
                         }
-                    }).catch(error=>{
-                        console.log(error)
                     })
                 }
             }
         }
 
         addEventListener("load", ()=>{
-            currentUserPromise.then(userData=>{
-                fetch(`${window.origin}/api/booking`).then(response=>{
-                    // console.log("準備渲染Booking List");
-                    if(response.status===403){
-                        location.href="/";
-                    }else{
-                        return response.json()                        
-                    }
-                }).then(resp=>{
+            currentUserPromise.then(currentUser=>{
+                getBookingList().then(resp=>{
                     ReactDOM.render(
-                        <Main data={resp.data} user={userData}/>, 
+                        <Main data={resp.data} user={currentUser}/>, 
                         document.querySelector("main")
                     )
                 })
             })
         })
-    </script>
+    </script> 
 {% endblock %}

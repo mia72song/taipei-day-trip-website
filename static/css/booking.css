@@ -1,12 +1,13 @@
 main{
     margin:54px auto 30px auto;
     width: 1200px;
+    min-height: 450px;
 }
-#main>div{
+.booking_form>div{
     width: 85%;
     margin:0 auto;
 }
-#main>div:not(.content){
+.booking_form>div:not(.content){
     padding:30px 0;
 }
 .content{
@@ -47,24 +48,39 @@ main{
 }
 .contact_info{
     padding: 18px 5px 5px 5px;
-    line-height: 2.6;
+    line-height: 3;
 }
 .payment_info{
     padding: 18px 5px 5px 5px;
-    line-height: 2.6;
+    line-height: 3;
 }
 .billing_info{
     padding: 15px 5px 5px 5px;
     line-height: 2.5;
     text-align: end;
 }
-form>h5{
-    margin-top:10px;
-}
 input{
-    border-radius: 3px;
-    padding: 5px;
+    width: 200px;
+    height: 38px;
+    font-size:15px;
+    padding: 8px;
+    margin: 10px;
     border: 1px solid #E8E8E8;
+    border-radius: 5px;
+}
+input:focus{
+    border-color: #66afe9;
+    outline: 0;
+}
+.tpfield {
+    width: 200px;
+    height: 38px;
+    padding: 8px;
+    margin: 10px;
+    border: 1px solid #E8E8E8;
+    border-radius: 5px;
+    display: inline-block;
+    vertical-align: middle;
 }
 button{
     background-color: #448899;

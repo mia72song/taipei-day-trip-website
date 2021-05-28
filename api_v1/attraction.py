@@ -1,11 +1,11 @@
 from flask import make_response, request, redirect
 import json
 
-from data.db import Mydb
+from model.db import Mydb
 from . import api
 
-# 將已取得資料庫數據，整理成dict格式
-def dictFormatter(result):
+# 將由資料庫取得的景點(attractions)，整理成dict格式
+def attractionsFormatter(result):
     cols = ["id", "name", "category", "description", "address", "transport", "mrt", "latitude", "longitude", "images"]
     data_dict = dict(zip(cols, result))
     images = result[9].split(" ")
@@ -32,7 +32,7 @@ def get_attractions():
         
         start_index = pageSize*page
         try:
-            results = mydb.getDataByKeyword(keyword, start_index, pageSize)
+            results = mydb.getAttractionsByKeyword(keyword, start_index, pageSize)
             attractions = []
             if results :
                 if len(results)==pageSize:
@@ -40,7 +40,7 @@ def get_attractions():
                 else:
                     nextPage = None
                 for r in results :
-                    data_dict = dictFormatter(r)
+                    data_dict = attractionsFormatter(r)
                     attractions.append(data_dict)
             else:
                 nextPage = None
@@ -72,7 +72,7 @@ def get_attractions():
 
     start_index = pageSize*page
     try:
-        results =  mydb.getDataByPage(start_index, pageSize)
+        results =  mydb.getAttractionsByPage(start_index, pageSize)
         attractions = []
         if results :
             if len(results)==pageSize :
@@ -81,7 +81,7 @@ def get_attractions():
                 nextPage = None
             
             for r in results:
-                data_dict = dictFormatter(r)
+                data_dict = attractionsFormatter(r)
                 attractions.append(data_dict)
         else:
             nextPage = None
@@ -109,9 +109,9 @@ def get_attraction(attractionid):
     status_code = 0
     try:
         mydb = Mydb()
-        result = mydb.getDataById(attractionid)
+        result = mydb.getAttractionById(attractionid)
         if result:
-            data_dict = dictFormatter(result)
+            data_dict = attractionsFormatter(result)
             body = json.dumps({"data":data_dict}, ensure_ascii=False, indent=2)
             status_code = 200
         else:

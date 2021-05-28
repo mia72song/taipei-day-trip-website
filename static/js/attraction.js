@@ -31,8 +31,6 @@ function createBooking(data){
         }else{
             console.log(response.json())
         }
-    }).catch(error=>{
-        console.log(error)
-    });
+    })
     return p
 }

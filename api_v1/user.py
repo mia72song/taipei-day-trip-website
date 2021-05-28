@@ -1,9 +1,9 @@
 from flask import request, jsonify, make_response, session
 
-from data.db import Mydb
+from model.db import Mydb
 from . import api
 
-#取得當前已登入的使用者資訊api
+# 取得當前已登入的使用者資訊api
 @api.route("/user")
 def get_current_user():
     current_user = session.get("user_info")
@@ -18,7 +18,7 @@ def get_current_user():
     else:
         return make_response(jsonify({"data":None}), 200)
 
-#註冊新用戶api
+# 註冊新用戶api
 @api.route("/user", methods=["POST"])
 def signup():
     signup_data = request.get_json()
@@ -31,7 +31,7 @@ def signup():
                 }), 400
             )
         mydb = Mydb()
-        if mydb.email_exists(signup_data["email"]):
+        if mydb.emailExists(signup_data["email"]):
             return make_response(
                 jsonify({
                     "error": True,
@@ -56,7 +56,7 @@ def signup():
             }), 500
         )
 
-#驗證登入api
+# 驗證登入api
 @api.route("/user", methods=["PATCH"])
 def login():
     login_data = request.get_json()
@@ -98,7 +98,7 @@ def login():
             }), 500
         )
 
-#登出api
+# 登出api
 @api.route("/user", methods=["DELETE"])
 def logout():
     if session.get("user_info"):

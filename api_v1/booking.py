@@ -1,10 +1,10 @@
 from flask import make_response, request, jsonify, session
-import json
 
-from data.db import Mydb
+from model.db import Mydb
 from . import api
 
-def dataFormatter(bookings):
+# 將由資料庫取得的預定行程列表(bookings)，整理成list格式
+def bookingsFormatter(bookings):
     data_list=[]
     for b in bookings:
         if not b : break
@@ -24,15 +24,15 @@ def dataFormatter(bookings):
         data_list.append(reservation)
     return data_list
 
-#取得尚未確認下單的預定行程列表
+# 取得尚未確認下單的預定行程列表
 @api.route("/booking")
 def get_booking_list():
     if session.get("user_info"):
         uid = session.get("user_info")[0]
         mydb = Mydb()
-        bookings = mydb.getBookingsByUserID(uid)
+        bookings = mydb.getBookingsByUserId(uid)
         if bookings:
-            data_list = dataFormatter(bookings)
+            data_list = bookingsFormatter(bookings)
             return jsonify({"data":data_list}), 200
         else:
             return jsonify({"data":None}), 200
@@ -40,7 +40,7 @@ def get_booking_list():
     else:
         return jsonify({"error": True, "message":{"login":False}}), 403
 
-#預定新行程
+# 預定新行程
 @api.route("/booking", methods=["POST"])
 def create_booking():
     if session.get("user_info"):
@@ -66,7 +66,7 @@ def create_booking():
     else:
         return jsonify({"error": True, "message":"無資料"}), 500
 
-#刪除目前的預定行程
+# 刪除目前的預定行程
 @api.route("/booking", methods=["DELETE"])
 def delete_booking():
     if session.get("user_info"):

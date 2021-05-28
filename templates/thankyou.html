@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Thanks Page{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href={{ url_for("static", filename="css/booking.css") }}>
+    <script type="text/javascript" src={{ url_for("static", filename="js/booking.js") }}></script>
+{% endblock %}
+{% block content %}
+    <main>
+        <!--由Thanks組件渲染-->
+    </main>
+    <script type="text/babel">
+        class Main extends React.Component{
+            render(){
+                const bookings=this.props.bookings;
+                console.log(this.props.user);
+                console.log(this.props.number);
+                return(
+                    <div className="booking_form">
+                        <div className="content">
+                            <h3>{this.props.user.name}，感謝您的訂購。</h3>
+                            <br/>
+                            <p>訂單編號：{this.props.number}付款成功。已預訂的行程如下：</p>
+                        </div>
+                        <div>
+                            {bookings.map(booking=><BookingList key={booking.attraction.id} booking={booking}/>)}
+                        </div>   
+                    </div>
+                )
+            }
+        }
+        class BookingList extends React.Component{
+            render(){
+                const data=this.props.booking;
+                return(
+                    <div>
+                        <div className="booking_info">
+                            <div className="img_div">
+                                <img src={data.attraction.image}/>
+                            </div>
+                            <div className="detail">
+                                <h3>{data.attraction.name}</h3>
+                                <label for="">日期：</label>
+                                <span className="attraction_date">{data.date}</span><br/>
+                                <label for="">時間：</label>
+                                <span className="attraction_time">{data.time==="morning"? "早上 9 點到下午 4 點":"下午 2 點到晚上 9 點"}</span><br/>
+                                <label for="">費用：</label>
+                                <span className="attraction_price">付款成功</span><br/>
+                                <label for="">地點：</label>
+                                <span className="attraction_address">{data.attraction.address}</span>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+        }
+        addEventListener("load", ()=>{
+            const number=location.search.split("=")[1];
+            const url=`${window.origin}/api/order/${number}`;
+            currentUserPromise.then(currentUser=>{
+                getBookingList(url).then(resp=>{
+                    console.log(resp);
+                    ReactDOM.render(
+                        <Main bookings={resp.data} user={currentUser} number={number}/>, 
+                        document.querySelector("main")
+                    )
+                })
+            })
+        })
+    </script>
+{% endblock %}

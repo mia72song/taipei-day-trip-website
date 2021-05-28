@@ -30,7 +30,7 @@ class Mydb:
         self.cur = self.conn.cursor()
         print("資料庫已開啟……")
 
-    def insertAll(self, id, name, category, description, address, transport, mrt, latitude, longitude, images):
+    def insertAttractions(self, id, name, category, description, address, transport, mrt, latitude, longitude, images):
         sql = f'''INSERT INTO attractions VALUES (
             '{id}','{name}','{category}','{description}','{address}','{transport}','{mrt}','{latitude}','{longitude}','{images}'
         )'''
@@ -38,25 +38,25 @@ class Mydb:
         self.conn.commit()
         print("已存入")
 
-    def getDataById(self, id):
+    def getAttractionById(self, id):
         sql = f"SELECT * FROM attractions WHERE id={id}"
         self.cur.execute(sql)
         data = self.cur.fetchone()
         return data
 
-    def getDataByPage(self, start_index, size):
+    def getAttractionsByPage(self, start_index, size):
         sql = f"SELECT * FROM attractions LIMIT {start_index}, {size}"
         self.cur.execute(sql)
         data = self.cur.fetchall()
         return data
 
-    def getDataByKeyword(self, keyword, start_index, size):
+    def getAttractionsByKeyword(self, keyword, start_index, size):
         sql = f"SELECT * FROM attractions WHERE name LIKE '%{keyword}%' LIMIT {start_index}, {size}"
         self.cur.execute(sql)
         data = self.cur.fetchall()
         return data
 
-    def email_exists(self, email):
+    def emailExists(self, email):
         sql = f"SELECT * FROM users WHERE email='{email}'"
         self.cur.execute(sql)
         result = self.cur.fetchone()
@@ -66,7 +66,7 @@ class Mydb:
             return False
 
     def createUser(self, username, email, password):
-        if not self.email_exists(email):
+        if not self.emailExists(email):
             password_hash = generate_password_hash(password)
             sql = f"INSERT INTO users (username, email, password) VALUES ('{username}','{email}','{password_hash}')"
             self.cur.execute(sql)
@@ -93,34 +93,75 @@ class Mydb:
         print("密碼已更新")
 
     def createBooking(self, aid, date, period, price, uid):
-        sql=f"INSERT INTO bookings (date, period, price, attraction_id, user_id) VALUES ('{date}', '{period}', {price}, {aid}, {uid})"
+        sql=f'''INSERT INTO bookings (date, period, price, attraction_id, user_id) 
+            VALUES ('{date}', '{period}', {price}, {aid}, {uid})'''
         self.cur.execute(sql)
         self.conn.commit()
         print("預定行程已新增")
 
-    def getBookingsByUserID(self, uid):
+    def getBookingsByUserId(self, uid):
         sql=f'''SELECT b.id,
             a.id, a.name, a.address, a.images, 
             b.date, b.period, b.price
             FROM bookings AS b
             INNER JOIN attractions as a ON b.attraction_id=a.id 
-            WHERE b.user_id={uid} and b.is_del=0
+            WHERE b.user_id={uid} and paid_order_number IS NULL
             ORDER BY create_datetime desc'''
         self.cur.execute(sql)
         data = self.cur.fetchall()
         return data
 
-    def fakeDelBooking(self, bid):
-        sql=f"UPDATE bookings SET is_del=1 WHERE id={bid}"
-        self.cur.execute(sql)
-        self.conn.commit()
-        print(f"編號：{bid} 已執行假刪除")
-
     def delBookingById(self, bid, uid):
-        sql=f"DELETE FROM bookings WHERE id={bid} and user_id={uid}"
+        paid = self.__bookingPaid(bid)
+        if paid:
+            print(f"編號：{bid} 付款完成，不可刪除")
+        else:
+            sql=f"DELETE FROM bookings WHERE id={bid} and user_id={uid} and paid_order_number IS NULL"
+            self.cur.execute(sql)
+            self.conn.commit()
+            print(f"編號：{bid} 已刪除")
+
+    def __bookingPaid(self, bid):
+        sql=f"SELECT * FROM bookings WHERE paid_order_number IS NOT NULL and id={bid}"
+        self.cur.execute(sql)
+        data = self.cur.fetchone()
+        return data
+    
+    def createOrder(self, number, prime, amount, contact_name, contact_email, contact_phone):
+        sql=f'''INSERT INTO orders (number, prime, amount, contact_name, contact_email, contact_phone)
+            VALUES ({number}, '{prime}', {amount}, '{contact_name}', '{contact_email}', '{contact_phone}')'''
         self.cur.execute(sql)
         self.conn.commit()
-        print(f"編號：{bid} 已刪除")
+        print("待付款訂單已建立")
+
+    def updatePaidOrder(self, number, booking_list):
+        if booking_list!=[] and number:
+            sql_order=f"UPDATE orders SET paid=1, update_datetime=NOW() WHERE number={number}"
+            self.cur.execute(sql_order)
+            self.conn.commit()
+            for bid in booking_list:
+                sql_booking=f"UPDATE bookings SET paid_order_number={number}, update_datetime=NOW() WHERE id={bid}"
+                self.cur.execute(sql_booking)
+                self.conn.commit()
+            print(f"訂單編號{number}已付款完成。")
+
+    def bookingToOrder(self, number, booking_list):
+        for bid in booking_list:
+            sql=f"INSERT INTO booking_to_order (booking_id, order_number) VALUES ({bid}, {number})"
+            self.cur.execute(sql)
+            self.conn.commit()
+        print(f"訂單編號{number}中繼表建立完成")
+
+    def getBookingsByOrderNumber(self, uid, number):
+        sql=f'''SELECT a.id, a.name, a.address, a.images,
+            b.date, b.period, b.price
+            FROM bookings AS b
+            INNER JOIN attractions AS a ON b.attraction_id=a.id
+            WHERE b.user_id={uid} and b.paid_order_number={number}
+            ORDER BY create_datetime desc'''
+        self.cur.execute(sql)
+        data = self.cur.fetchall()
+        return data
 
     def __del__(self):
         self.cur.close()
@@ -129,5 +170,6 @@ class Mydb:
 
 if __name__ == "__main__":
     mydb = Mydb()
-    data = mydb.getBookingsByUserID(1)
+    data = mydb.getBookingsByOrderNumber(1, 14839455960560)
+    print(data)
     del mydb

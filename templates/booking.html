@@ -44,7 +44,7 @@
                     booking_list=<p>目前沒有任何待預訂的行程</p>
                 }
                 return(
-                    <form>
+                    <div className="booking_form">
                         <div className="content">
                             <h3>你好，<span id="username">{this.props.user.name}</span>，待預訂的行程如下：</h3>
                         </div>
@@ -90,7 +90,7 @@
                                 <button id="submitBtn" onClick={this.handleSubmit}>確認訂購並付款</button>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 )
             }
             changeInputData=(dataType)=>{
@@ -147,6 +147,7 @@
                     createOrder(data).then(resp=>{
                         if(resp.data.payment.status===0){
                             location.href=`${window.origin}/thankyou?number=${resp.data.number}`;
+                            // console.log(resp.data.number);
                         }else if(resp.error){
                             alert(resp.message);
                         }

@@ -1,12 +1,13 @@
 main{
     margin:54px auto 30px auto;
     width: 1200px;
+    min-height: 450px;
 }
-form>div{
+.booking_form>div{
     width: 85%;
     margin:0 auto;
 }
-form>div:not(.content){
+.booking_form>div:not(.content){
     padding:30px 0;
 }
 .content{

@@ -1,9 +1,28 @@
 from flask import make_response, request, jsonify, session
-import json
 
 from model.db import Mydb
-from model.data_formatter import bookingsFormatter
 from . import api
+
+# 將由資料庫取得的預定行程列表(bookings)，整理成list格式
+def bookingsFormatter(bookings):
+    data_list=[]
+    for b in bookings:
+        if not b : break
+        images = b[4].split(" ")
+        reservation={
+            "booking_id":b[0],
+            "attraction": {
+                "id": b[1],
+                "name": b[2],
+                "address": b[3],
+                "image": images[0]
+            },
+            "date": b[5],
+            "time": b[6],
+            "price": b[7]
+        }
+        data_list.append(reservation)
+    return data_list
 
 # 取得尚未確認下單的預定行程列表
 @api.route("/booking")

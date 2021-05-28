@@ -4,7 +4,6 @@ import requests
 import json
 
 from model.db import Mydb
-from model.data_formatter import bookingsFormatter
 from . import api
 
 # TapPay
@@ -35,10 +34,29 @@ def pay_by_prime(number, prime, amout, contact):
     #print(type(response.json()))
     resp_text = response.json()
     if resp_text["status"]==0:
-        #print(resp_text)
+        print(resp_text)
         return int(resp_text["bank_transaction_id"])
     else:
         return None
+
+def paidBookingsFormatter(bookings):
+    data_list=[]
+    for b in bookings:
+        if not b : break
+        images = b[3].split(" ")
+        reservation={
+            "attraction": {
+                "id":b[0],
+                "name": b[1],
+                "address": b[2],
+                "image": images[0]
+            },
+            "date": b[4],
+            "time": b[5],
+            "price": b[6]
+        }
+        data_list.append(reservation)
+    return data_list
 
 # 建立新的訂單，並完成付款
 @api.route("/orders", methods=["POST"])
@@ -50,14 +68,14 @@ def create_order():
     if order_data:
         print(order_data)
         contact = order_data["contact"]
-        number = uuid.uuid1().time
+        number = str(uuid.uuid1().time)[4:]
         mydb = Mydb()
         try:
             mydb.createOrder(number, order_data["prime"], order_data["price"], contact["name"], contact["email"], contact["phone"])
             mydb.bookingToOrder(number, order_data["orders"])
             number_for_success = pay_by_prime(number, order_data["prime"], order_data["price"], contact)
             if number_for_success:
-                mydb.updatePaidOrder(number, order_data["orders"])
+                mydb.updatePaidOrder(number_for_success, order_data["orders"])
             else:
                 return jsonify({"error": True, "message":f"訂單編號：{number}，信用卡付款失敗，請洽客服"}), 400
             
@@ -77,7 +95,7 @@ def create_order():
         return jsonify({"error": True, "message":"無資料"}), 500
 
 # 根據訂單編號取得訂單資訊
-@api.route("/order/<orderNumber>")
+@api.route("/order/<int:orderNumber>")
 def get_order(orderNumber):
     if not session.get("user_info"):
         return jsonify({"error": True, "message":{"login":False}}), 403
@@ -86,7 +104,7 @@ def get_order(orderNumber):
     mydb = Mydb()
     paid_bookings = mydb.getBookingsByOrderNumber(uid, orderNumber)
     if paid_bookings:
-        data_list = bookingsFormatter(paid_bookings)
+        data_list = paidBookingsFormatter(paid_bookings)
         return jsonify({"data":data_list}), 200
     else:
         return jsonify({"data":None}), 200

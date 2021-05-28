@@ -150,18 +150,17 @@ class Mydb:
             sql=f"INSERT INTO booking_to_order (booking_id, order_number) VALUES ({bid}, {number})"
             self.cur.execute(sql)
             self.conn.commit()
-        print("訂單編號{number}中繼表建立完成")
+        print(f"訂單編號{number}中繼表建立完成")
 
     def getBookingsByOrderNumber(self, uid, number):
-        sql=f'''SELECT a.name, a.address, a.images,
+        sql=f'''SELECT a.id, a.name, a.address, a.images,
             b.date, b.period, b.price
             FROM bookings AS b
             INNER JOIN attractions AS a ON b.attraction_id=a.id
-            WHERE b.user_id={uid} and paid_order_number={number}
-            ORDER BY create_datetime desc
-        '''
+            WHERE b.user_id={uid} and b.paid_order_number={number}
+            ORDER BY create_datetime desc'''
         self.cur.execute(sql)
-        data = self.cur.fetchall
+        data = self.cur.fetchall()
         return data
 
     def __del__(self):
@@ -171,5 +170,6 @@ class Mydb:
 
 if __name__ == "__main__":
     mydb = Mydb()
-    
+    data = mydb.getBookingsByOrderNumber(1, 14839455960560)
+    print(data)
     del mydb

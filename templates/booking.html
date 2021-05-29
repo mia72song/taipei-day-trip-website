@@ -98,8 +98,7 @@
                     this.setState({[dataType]:eObj.currentTarget.value});
                 }
             }
-            handleSubmit=(eObj)=>{
-                eObj.preventDefault();
+            handleSubmit=()=>{
                 // 輸入資料格式驗證
                 const {name, email, phone}=this.state;
                 if(name==="" || email==="" || phone===""){

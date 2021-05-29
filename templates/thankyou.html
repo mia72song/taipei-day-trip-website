@@ -7,14 +7,14 @@
 {% endblock %}
 {% block content %}
     <main>
-        <!--由Thanks組件渲染-->
+        <!--由Main組件渲染-->
     </main>
     <script type="text/babel">
         class Main extends React.Component{
             render(){
                 const bookings=this.props.bookings;
-                console.log(this.props.user);
-                console.log(this.props.number);
+                // console.log(this.props.user);
+                // console.log(this.props.number);
                 return(
                     <div className="booking_form">
                         <div className="content">
@@ -59,7 +59,7 @@
             const url=`${window.origin}/api/order/${number}`;
             currentUserPromise.then(currentUser=>{
                 getBookingList(url).then(resp=>{
-                    console.log(resp);
+                    // console.log(resp);
                     ReactDOM.render(
                         <Main bookings={resp.data} user={currentUser} number={number}/>, 
                         document.querySelector("main")

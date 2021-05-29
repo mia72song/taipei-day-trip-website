@@ -67,7 +67,7 @@ def create_order():
 
     order_data=request.get_json()
     if order_data:
-        print(order_data)
+        #print(order_data)
         contact = order_data["contact"]
         number = str(uuid.uuid1().time)[4:]
         mydb = Mydb()

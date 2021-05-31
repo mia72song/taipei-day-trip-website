@@ -29,7 +29,7 @@ const loadTPDirect=()=>{
                 'font-size': '15px'
             },
             '.valid': {
-                'color': 'green'
+                'color': 'black'
             },
             '.invalid': {
                 'color': 'red'

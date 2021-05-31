@@ -64,12 +64,18 @@ header{
 .menu a{
     color: #666666;
 }
+.menu a:hover{
+    font-size: large;
+}
 #login{
     display: inline-block;
 }
 #logout{
     display: none;
     text-decoration:underline;
+}
+#logout:hover{
+    color:palevioletred;
 }
 #popup_wrap{
     width: 100%;

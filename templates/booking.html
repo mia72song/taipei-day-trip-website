@@ -56,13 +56,13 @@
                             <h3>您的聯絡資訊</h3>
                             <div className="contact_info">
                                 <label for="">聯絡姓名：</label>
-                                <input type="text" name="name" id="name" 
+                                <input type="text" name="name" id="name" required
                                     value={this.state.name} onChange={this.changeInputData("name")}/><br/>
                                 <label for="">連絡信箱：</label>
-                                <input type="email" name="email" id="email" 
+                                <input type="email" name="email" id="email" required
                                     value={this.state.email} onChange={this.changeInputData("email")}/><br/>
                                 <label for="">手機號碼：</label>
-                                <input type="text" name="phone" id="phone" placeholder="09xxxxxxxx，共10碼" 
+                                <input type="text" name="phone" id="phone" placeholder="09xxxxxxxx，共10碼" pattern="09\d{8}" required
                                     value={this.state.phone} onChange={this.changeInputData("phone")}/>
                             </div>
                         </div>
@@ -95,7 +95,7 @@
             }
             changeInputData=(dataType)=>{
                 return (eObj)=>{
-                    this.setState({[dataType]:eObj.currentTarget.value});
+                    this.setState({[dataType]:eObj.currentTarget.value});                    
                 }
             }
             handleSubmit=()=>{

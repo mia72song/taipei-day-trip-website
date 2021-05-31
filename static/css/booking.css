@@ -65,22 +65,28 @@ input{
     font-size:15px;
     padding: 8px;
     margin: 10px;
-    border: 1px solid #E8E8E8;
+    border: 1.5px solid #E8E8E8;
     border-radius: 5px;
 }
-input:focus{
-    border-color: #66afe9;
-    outline: 0;
+input:invalid{
+    color: red;
+}
+.contact_info>input:focus{
+    outline:none;
+    border: 1.5px solid #E8E8E8;
 }
 .tpfield {
     width: 200px;
     height: 38px;
     padding: 8px;
     margin: 10px;
-    border: 1px solid #E8E8E8;
+    border: 1.5px solid #E8E8E8;
     border-radius: 5px;
     display: inline-block;
     vertical-align: middle;
+}
+.tpfield:hover{
+    cursor: pointer;
 }
 button{
     background-color: #448899;

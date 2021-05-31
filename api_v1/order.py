@@ -2,14 +2,18 @@ from flask import request, jsonify, session
 import uuid
 import requests
 import json
+import os
+from dotenv import load_dotenv
 
 from model.db import Mydb
 from . import api
 
+load_dotenv()
+
 # TapPay
 def pay_by_prime(number, prime, amout, contact):
     url = "https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
-    partner_key = "partner_ktQgBPDeaOKAThHqAd3p16aBM9hMmqMqjcZKLPaUI2czNXeIYPvXMtGK"
+    partner_key = os.getenv("TAPPAY_PARTNET_KEY")
     merchant_id = "mia72song_CTBC"
     headers = {
         "Content-Type": "application/json",

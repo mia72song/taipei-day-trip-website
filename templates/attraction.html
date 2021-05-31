@@ -103,29 +103,16 @@
         // 預訂行程表單
         class Booking extends React.Component{
             state={
-                date:"",
+                date:"2021-01-01", // 格式：yyyy/mm/dd
                 checked:"morning", // or "afternoon"
                 price:{
                     morning:2000,
                     afternoon:2500
                 }
             }
-            // 顯示明日的日期，可以預約的日期自「明日」開始
-            checkAvailableDate=()=>{
-                let current_time=new Date();
-                let month=current_time.getMonth()+1;
-                if(month.toString().length<2){
-                    month="0"+month;
-                }                    
-                let date=current_time.getDate()+1;
-                if(date.toString().length<2){
-                    date="0"+date;
-                }
-                const AvailableDate=current_time.getFullYear()+"-"+month+"-"+date;
-                return AvailableDate
-            }
             componentDidMount(){
-                this.setState({date:this.checkAvailableDate()});
+                const AvailableDate=getAvailableDate();
+                this.setState({date:AvailableDate});
             }
             render(){
                 const {date, checked, price}=this.state;
@@ -151,10 +138,22 @@
                     </div>
                 )
             }
+            dateChange=(eObj)=>{
+                const booking_date=eObj.target.value;
+                const AvailableDate=getAvailableDate();
+                if((Date.parse(booking_date)).valueOf()>=(Date.parse(AvailableDate)).valueOf()){
+                    this.setState({date:booking_date});
+                }else{
+                    alert(`可供預約日期為明日(${AvailableDate})之後`);
+                }
+            }
+            handelCheck=(eObj)=>{
+                this.setState({checked:eObj.target.id});
+            }
             handelSubmit=(eObj)=>{
                 eObj.preventDefault();
                 const {date, checked, price}=this.state;
-                const AvailableDate=this.checkAvailableDate();
+                const AvailableDate=getAvailableDate();
                 if((Date.parse(date)).valueOf()>=(Date.parse(AvailableDate)).valueOf()){
                     const data={
                         attractionId:this.props.attraction_id,
@@ -178,21 +177,26 @@
                     alert(`可供預約日期為明日(${AvailableDate})之後`);
                 }
             }
-            dateChange=(eObj)=>{
-                const date=eObj.target.value;
-                const AvailableDate=this.checkAvailableDate();
-                if((Date.parse(date)).valueOf()>=(Date.parse(AvailableDate)).valueOf()){
-                    this.setState({date})
-                }else{
-                    alert(`可供預約日期為明日(${AvailableDate})之後`);
-                }
-            }
-            handelCheck=(eObj)=>{
-                // console.log(eObj.target.id);
-                this.setState({checked:eObj.target.id});
-            }
         }
-    
+        const getAvailableDate=()=>{
+            const current_time=new Date();
+            let year=current_time.getFullYear();
+            let month=current_time.getMonth()+1;
+            let nextDate=current_time.getDate()+1;
+            //console.log(date);
+            const thisMonthDays=32-new Date(year, month-1, 32).getDate();
+            //console.log(thisMonthDays);
+            if(nextDate>thisMonthDays){
+                nextDate=1;
+                month++;
+            }
+            if(month>12){
+                month=1;
+                year++;
+            }
+            const AvailableDate=`${year}-${month<10?"0"+month.toString():month}-${nextDate<10?"0"+nextDate.toString():nextDate}`;
+            return AvailableDate
+        }
         addEventListener("load", ()=>{
             ReactDOM.render(<Main/>, document.querySelector("main"));
         })

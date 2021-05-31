@@ -24,6 +24,9 @@ a{
     text-decoration: none;
     cursor: pointer;
 }
+input{
+    cursor: pointer;
+}
 /* header */
 header{
     background-color:#FFFFFF;

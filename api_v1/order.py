@@ -14,7 +14,7 @@ load_dotenv()
 def pay_by_prime(number, prime, amout, contact):
     url = "https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
     partner_key = os.getenv("TAPPAY_PARTNET_KEY")
-    merchant_id = "mia72song_CTBC"
+    merchant_id = os.getenv("TAPPAY_MERCHANT_ID")
     headers = {
         "Content-Type": "application/json",
         "x-api-key": partner_key

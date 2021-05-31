@@ -93,6 +93,9 @@ form>button{
     margin-top:10px;
     font-weight: bold;
 }
+label[for="date"]{
+    font-weight: bold;
+}
 input[type="date"]{
     padding:4px;
 }

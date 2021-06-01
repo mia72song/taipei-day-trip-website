@@ -1,14 +1,9 @@
 import pymysql
 import os
-import re
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 load_dotenv()
-
-# pattern
-email_pattern = r'^[\w.-]+@[^@\s]+\.[a-zA-Z]{2,10}$'
-phone_pattern = r'^09\d{8}$'
 
 db_info = {
     "host":os.getenv("DB_HOST", default="localhost"),
@@ -179,10 +174,5 @@ class Mydb:
         print("資料庫已關閉!!")
 
 if __name__ == "__main__":
-    date_string = "2021-16-02"
-    today = datetime.now().date()
-    print(type(today))
-    date = datetime.strptime(date_string, "%Y-%m-%d").date()
-    print(type(date))
-    print(today>date)
+    email = "mia72song@gmail.com"
     

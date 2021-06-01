@@ -144,9 +144,10 @@
                         }
                     };
                     createOrder(data).then(resp=>{
-                        if(resp.data.payment.status===0){
-                            location.href=`${window.origin}/thankyou?number=${resp.data.number}`;
-                            // console.log(resp.data.number);
+                        if(resp.data){
+                            if(resp.data.payment.status===0){
+                                location.href=`${window.origin}/thankyou?number=${resp.data.number}`;
+                            }
                         }else if(resp.error){
                             alert(resp.message);
                             location.reload();

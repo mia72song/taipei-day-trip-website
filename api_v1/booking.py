@@ -6,7 +6,6 @@ from model.db import Mydb
 from . import api
 
 # pattern
-date_pattern = r"^\d{4}-\d{2}-\d{2}$"
 price = {"morning":2000, "afternoon":2500}
 
 # 將由資料庫取得的預定行程列表(bookings)，整理成list格式

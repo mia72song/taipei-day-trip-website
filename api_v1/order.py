@@ -82,8 +82,8 @@ def create_order():
         if contact["name"]=="" or contact["email"]=="" or contact["phone"]=="":
             return jsonify({"error": True, "message":"付款失敗：聯絡資料不得為空值"}), 400
 
-        email_check = re.match(contact["email"], email_pattern)
-        phone_check = re.match(contact["phone"], phone_pattern)
+        email_check = re.match(email_pattern, contact["email"])
+        phone_check = re.match(phone_pattern, contact["phone"])
         if not email_check or not phone_check:
             return jsonify({"error": True, "message":"付款失敗：聯絡資料有誤。"}), 400
 

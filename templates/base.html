@@ -47,7 +47,7 @@
         // 頁面載入時，取得當前已登入的使用者資訊
         let currentUserPromise;
         addEventListener("load", ()=>{
-            currentUserPromise=ajaxRequest("get").then(resp=>{
+            currentUserPromise=requestUserData("get").then(resp=>{
                 // console.log("呼叫currentUserPromise");
                 if(resp.data){
                     const currentUser=resp.data;
@@ -84,7 +84,7 @@
         })
         // 點擊登出
         logout.addEventListener("click", ()=>{
-            ajaxRequest("delete").then(resp=>{
+            requestUserData("delete").then(resp=>{
                 if(resp.ok){
                     location.reload();
                 }
@@ -132,9 +132,9 @@
                     <div id="loginForm">
                         <form method="post" onSubmit={this.handleSubmit}>
                             <h3>登入會員帳號</h3>
-                            <input type="email" name="email" id="email" placeholder="輸入電子信箱"
+                            <input type="email" name="email" id="email" placeholder="輸入電子信箱" required
                                 value={this.state.email} onChange={this.handleChange("email")}/>
-                            <input type="password" name="password" id="password" placeholder="輸入密碼"
+                            <input type="password" name="password" id="password" placeholder="輸入密碼" 
                                 value={this.state.password} onChange={this.handleChange("password")}/>
                             <br />
                             <input type="submit" value="登入帳戶" />
@@ -151,8 +151,7 @@
                     return
                 }
                 const data={email, password};
-                let p=ajaxRequest('patch', data);
-                p.then(resp=>{
+                requestUserData('patch', data).then(resp=>{
                     if(resp.ok){
                         location.href=nextPathAfterLogin; // 由點擊的按紐判斷登入後跳轉的路徑
                     }else if(resp.error){
@@ -188,11 +187,11 @@
                     <div id="signupForm">
                         <form method="post"  onSubmit={this.handleSubmit}>
                             <h3>註冊會員帳號</h3>
-                            <input type="text" name="username" id="username" placeholder="輸入姓名"
+                            <input type="text" name="username" id="username" placeholder="輸入姓名" 
                                 value={username} onChange={this.handleChange("username")}/>
-                            <input type="email" name="email" id="email" placeholder="輸入電子信箱"
+                            <input type="email" name="email" id="email" placeholder="輸入電子信箱" 
                                 value={email} onChange={this.handleChange("email")}/>
-                            <input type="password" name="password" id="password" placeholder="輸入密碼 ( 4個以上英數字 )"
+                            <input type="password" name="password" id="password" placeholder="輸入密碼 ( 4個以上英數字 )" 
                                 value={password} onChange={this.handleChange("password")}/>
                             <br />
                             <input type="submit" value="註冊新帳戶" />
@@ -208,12 +207,16 @@
                     alert("註冊資料皆不得空值");
                     return
                 }
-                if(!password.match(/[A-Za-z0-9]{4}/)){
+                if(!email.match(/^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})*$/)){
+                    alert("Email信箱格式錯誤")
+                    return
+                }
+                if(!password.match(/[A-Za-z0-9]{4,}/)){
                     alert("密碼請輸入4個以上的大小寫英數字")
                     return
                 }
                 const data={name:username, email, password};
-                ajaxRequest("post", data).then(resp=>{
+                requestUserData("post", data).then(resp=>{
                     if(resp.ok){
                         this.setState({message:"ok"});
                     }else if(resp.error){

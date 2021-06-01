@@ -14,13 +14,11 @@
         class Main extends React.Component{  
             state={}
             componentDidMount(){
-                const p=getDataById();
-                p.then(data=>{
+                getAttractionById().then(data=>{
                     this.setState(data["data"]);
                 })
             }
             render(){
-                // console.log(this.state);
                 return(
                     <div>
                         <div className="item">
@@ -60,7 +58,6 @@
                 let radio_list=[];
                 if(images_arr){
                     src=images_arr[this.state.index];
-                    // console.log(images_arr.length-1);
                     for(let i=0; i<images_arr.length; i++){
                         let id="img"+i
                         radio_list.push(

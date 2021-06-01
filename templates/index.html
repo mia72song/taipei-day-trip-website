@@ -33,7 +33,7 @@
             }
             componentDidMount(){
                 // 初始化首頁的景點資訊
-                let p=getDataByPage(0);
+                let p=getAttractionsByPage(0);
                 if(p){
                     p.then(data=>{
                         //console.log(data);
@@ -47,8 +47,7 @@
                 window.addEventListener("scroll", this.handleScroll, true);
                 // 訂閱KEYWORD消息
                 this.token=PubSub.subscribe("KEYWORD", (_, keyword)=>{
-                    //console.log("Databox被通知：", keyword);
-                    let p=getDataByKeyword(keyword, 0);
+                    let p=getAttractionsByKeyword(keyword, 0);
                     if(p){
                         p.then(data=>{
                             this.setState({
@@ -62,7 +61,6 @@
             }
             render(){
                 const spots=this.state.data;
-                // console.log(spots);
                 let box_content;
                 if(spots.length>0){
                     box_content=spots.map(spot=><Item key={spot.id} id={spot.id} name={spot.name} mrt={spot.mrt} category={spot.category} img_link={spot.images[0]}/>)
@@ -82,7 +80,6 @@
                 PubSub.unsubscribe(this.token);
             }
             handleScroll=()=>{
-                // console.log(this.state.nextPage);
                 let p;
                 if(this.state.nextPage){
                     const scrollY=window.scrollY; // 文檔在垂直方向已滚动的像素值
@@ -95,11 +92,10 @@
                         document.body.clientHeight, document.documentElement.clientHeight
                     );
                     if(scrollY+innerHeight>=scrollHeight-100){
-                        // console.log("Touch the Bottom!!");
                         if(this.state.keyword){
-                            p=getDataByKeyword(this.state.keyword, this.state.nextPage);
+                            p=getAttractionsByKeyword(this.state.keyword, this.state.nextPage);
                         }else{
-                            p=getDataByPage(this.state.nextPage);
+                            p=getAttractionsByPage(this.state.nextPage);
                         }                    
                         if(p){
                             const currentSpots=this.state.data;
@@ -116,7 +112,6 @@
         }
         class Item extends React.Component{
             render(){
-                // console.log(this.props);
                 return(
                     <div className="item" onClick={this.handleClick(this.props.id)}>
                         <img src={this.props.img_link} alt={this.props.name}/>
@@ -130,7 +125,6 @@
             }
             handleClick=(id)=>{
                 return ()=>{
-                    // console.log(id);
                     location.href=`${window.origin}/attraction/${id}`;
                 }
             }
@@ -148,7 +142,6 @@
             search=()=>{
                 const keyword=this.inputElement.value;
                 if(keyword!==""){
-                    // console.log(keyword);
                     PubSub.publish('KEYWORD', keyword);
                 }else{
                     return

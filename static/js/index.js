@@ -1,6 +1,6 @@
 let ajaxRequested=false;// 監測是否正在發出ajax請求
 
-function getDataByPage(page){
+function getAttractionsByPage(page){
     if(!ajaxRequested){
         ajaxRequested=true;
         const url=`${window.origin}/api/attractions?page=${page}`;
@@ -18,7 +18,7 @@ function getDataByPage(page){
     }
 }
 
-function getDataByKeyword(keyword, page){
+function getAttractionsByKeyword(keyword, page){
     if(!ajaxRequested){
         ajaxRequested=true;
         const url=`${window.origin}/api/attractions?keyword=${keyword}&page=${page}`;

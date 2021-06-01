@@ -1,5 +1,5 @@
 // 向後端請求attraction的api
-function getDataById(){
+function getAttractionById(){
     let p;
     let attraction_id=parseInt(window.location.pathname.split("/")[2]);
     if(attraction_id>0){

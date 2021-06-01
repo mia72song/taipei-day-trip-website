@@ -105,8 +105,8 @@
                     alert("聯絡資料未填寫");
                     return
                 }
-                if(!phone.match(/^09\d{8}$/)){
-                    alert("手機號碼格式錯誤");
+                if(!phone.match(/^09\d{8}$/) || !email.match(/^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})*$/)){
+                    alert("聯絡資料格式錯誤，務必留下正確的聯絡方式!!");
                     return
                 }
                 // 無預定行程及金額為0，不提交

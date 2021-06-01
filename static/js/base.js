@@ -1,6 +1,6 @@
 const url=`${window.origin}/api/user`;
 
-function ajaxRequest(method, data=null){
+function requestUserData(method, data=null){
     let body;
     if(data){
         body=JSON.stringify(data)

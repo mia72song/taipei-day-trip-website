@@ -3,12 +3,17 @@ import uuid
 import requests
 import json
 import os
+import re
 from dotenv import load_dotenv
 
 from model.db import Mydb
 from . import api
 
 load_dotenv()
+
+# pattern
+email_pattern = r'^[\w.-]+@[^@\s]+\.[a-zA-Z]{2,10}$'
+phone_pattern = r'^09\d{8}$'
 
 # TapPay
 def pay_by_prime(number, prime, amout, contact):
@@ -35,12 +40,11 @@ def pay_by_prime(number, prime, amout, contact):
     }, ensure_ascii=False, indent=2)
     response = requests.post(url, headers=headers, data=post_data)
     #print(response.json())
-    #print(type(response.json()))
     resp_text = response.json()
     if resp_text["status"]==0:
-        print(resp_text)
         return int(resp_text["bank_transaction_id"])
     else:
+        print(resp_text)
         return None
 
 # 將由資料庫取得的預定行程列表(bookings)，整理成list格式
@@ -71,8 +75,18 @@ def create_order():
 
     order_data=request.get_json()
     if order_data:
-        #print(order_data)
         contact = order_data["contact"]
+        if order_data["prime"]=="" or order_data["price"]=="":
+            return jsonify({"error": True, "message":"付款失敗：付款資料有誤"}), 400
+
+        if contact["name"]=="" or contact["email"]=="" or contact["phone"]=="":
+            return jsonify({"error": True, "message":"付款失敗：聯絡資料不得為空值"}), 400
+
+        email_check = re.match(contact["email"], email_pattern)
+        phone_check = re.match(contact["phone"], phone_pattern)
+        if not email_check or not phone_check:
+            return jsonify({"error": True, "message":"付款失敗：聯絡資料有誤。"}), 400
+
         number = str(uuid.uuid1().time)[4:]
         mydb = Mydb()
         try:

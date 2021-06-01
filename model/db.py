@@ -1,8 +1,14 @@
 import pymysql
 import os
+import re
+from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 load_dotenv()
+
+# pattern
+email_pattern = r'^[\w.-]+@[^@\s]+\.[a-zA-Z]{2,10}$'
+phone_pattern = r'^09\d{8}$'
 
 db_info = {
     "host":os.getenv("DB_HOST", default="localhost"),
@@ -36,7 +42,7 @@ class Mydb:
         )'''
         self.cur.execute(sql)
         self.conn.commit()
-        print("已存入")
+        print("景點資料已匯入")
 
     def getAttractionById(self, id):
         sql = f"SELECT * FROM attractions WHERE id={id}"
@@ -65,7 +71,7 @@ class Mydb:
         else:
             return False
 
-    def createUser(self, username, email, password):
+    def createUser(self, username, email, password):        
         if not self.emailExists(email):
             password_hash = generate_password_hash(password)
             sql = f"INSERT INTO users (username, email, password) VALUES ('{username}','{email}','{password_hash}')"
@@ -73,13 +79,12 @@ class Mydb:
             self.conn.commit()
             print("新用戶已寫入")
         else:
-            print("此email已註冊過")
+            raise Exception(f"此Email：{email}已註冊過")
     
     def getUser(self, email, password):
         sql = f"SELECT id, username, email, password FROM users WHERE email='{email}'"
         self.cur.execute(sql)
         data = self.cur.fetchone()
-        # print(data)
         if data and check_password_hash(data[3], password):
             return data[0], data[1], data[2]
         else:
@@ -93,6 +98,11 @@ class Mydb:
         print("密碼已更新")
 
     def createBooking(self, aid, date, period, price, uid):
+        try:
+            datetime.strptime(date, "%Y-%m-%d")
+        except Exception as e:
+            raise ValueError(e)
+        
         sql=f'''INSERT INTO bookings (date, period, price, attraction_id, user_id) 
             VALUES ('{date}', '{period}', {price}, {aid}, {uid})'''
         self.cur.execute(sql)
@@ -169,7 +179,10 @@ class Mydb:
         print("資料庫已關閉!!")
 
 if __name__ == "__main__":
-    mydb = Mydb()
-    data = mydb.getBookingsByOrderNumber(1, 14839455960560)
-    print(data)
-    del mydb
+    date_string = "2021-16-02"
+    today = datetime.now().date()
+    print(type(today))
+    date = datetime.strptime(date_string, "%Y-%m-%d").date()
+    print(type(date))
+    print(today>date)
+    

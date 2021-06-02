@@ -28,9 +28,9 @@ def pay_by_prime(number, prime, amout, contact):
         "prime": prime,
         "partner_key": partner_key,
         "merchant_id": merchant_id,
-        "details":"One Day Trip",
+        "details": "One Day Trip",
         "amount": amout,
-        "bank_transaction_id":str(number),
+        "bank_transaction_id": str(number),
         "cardholder": {
             "phone_number": "+886"+contact["phone"][1:],
             "name": contact["name"],
@@ -71,21 +71,21 @@ def paidBookingsFormatter(bookings):
 @api.route("/orders", methods=["POST"])
 def create_order():
     if not session.get("user_info"):
-        return jsonify({"error": True, "message":{"login":False}}), 403
+        return jsonify({"error": True, "message": {"login": False}}), 403
 
     order_data=request.get_json()
     if order_data:
         contact = order_data["contact"]
         if order_data["prime"]=="" or order_data["price"]=="":
-            return jsonify({"error": True, "message":"付款失敗：付款資料有誤"}), 400
+            return jsonify({"error": True, "message": "付款失敗：付款資料有誤"}), 400
 
         if contact["name"]=="" or contact["email"]=="" or contact["phone"]=="":
-            return jsonify({"error": True, "message":"付款失敗：聯絡資料不得為空值"}), 400
+            return jsonify({"error": True, "message": "付款失敗：聯絡資料不得為空值"}), 400
 
         email_check = re.match(email_pattern, contact["email"])
         phone_check = re.match(phone_pattern, contact["phone"])
         if not email_check or not phone_check:
-            return jsonify({"error": True, "message":"付款失敗：聯絡資料有誤。"}), 400
+            return jsonify({"error": True, "message": "付款失敗：聯絡資料有誤。"}), 400
 
         number = str(uuid.uuid1().time)[4:]
         mydb = Mydb()
@@ -96,10 +96,10 @@ def create_order():
             if number_for_success:
                 mydb.updatePaidOrder(number_for_success, order_data["orders"])
             else:
-                return jsonify({"error": True, "message":f"訂單編號：{number}，信用卡付款失敗，請洽客服"}), 400
+                return jsonify({"error": True, "message": f"訂單編號：{number}，信用卡付款失敗，請洽客服"}), 400
             
         except Exception as e:
-            return jsonify({"error": True, "message":f"伺服器內部錯誤：{e}"}), 500
+            return jsonify({"error": True, "message": f"伺服器內部錯誤：{e}"}), 500
         
         del mydb
         resp_data = {
@@ -111,19 +111,19 @@ def create_order():
         }
         return jsonify({"data":resp_data}), 200
     else:
-        return jsonify({"error": True, "message":"無資料"}), 500
+        return jsonify({"error": True, "message": "無資料"}), 500
 
 # 根據訂單編號取得訂單資訊
 @api.route("/order/<int:orderNumber>")
 def get_order(orderNumber):
     if not session.get("user_info"):
-        return jsonify({"error": True, "message":{"login":False}}), 403
+        return jsonify({"error": True, "message": {"login": False}}), 403
     
     uid = session.get("user_info")[0]
     mydb = Mydb()
     paid_bookings = mydb.getBookingsByOrderNumber(uid, orderNumber)
     if paid_bookings:
         data_list = paidBookingsFormatter(paid_bookings)
-        return jsonify({"data":data_list}), 200
+        return jsonify({"data": data_list}), 200
     else:
-        return jsonify({"data":None}), 200
+        return jsonify({"data": None}), 200

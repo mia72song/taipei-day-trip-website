@@ -14,14 +14,14 @@ def get_current_user():
     current_user = session.get("user_info")
     if current_user:
         return jsonify({
-            "data":{
+            "data": {
                 "id":current_user[0],
                 "name":current_user[1],
                 "email":current_user[2]
             }
         }), 200
     else:
-        return jsonify({"data":None}), 200
+        return jsonify({"data": None}), 200
 
 # 註冊新用戶api
 @api.route("/user", methods=["POST"])
@@ -38,8 +38,8 @@ def signup():
         pwd_check = re.match(pwd_pattern, signup_data["password"])
         if not email_check or not pwd_check:
             return jsonify({
-                "error":True, 
-                "message":"資料格式(Email或密碼)有誤"
+                "error": True, 
+                "message": "資料格式(Email或密碼)有誤"
             }), 400
         
         mydb = Mydb()
@@ -53,8 +53,8 @@ def signup():
                 mydb.createUser(signup_data["name"], signup_data["email"], signup_data["password"])
             except Exception as e:
                 return jsonify({
-                    "error":True,
-                    "message":f"伺服器內部錯誤:{e}"
+                    "error": True,
+                    "message": f"伺服器內部錯誤:{e}"
                 }), 500
             del mydb
             return jsonify({"ok": True}), 200
@@ -73,22 +73,14 @@ def login():
             return jsonify({
                 "error": True,
                 "message": "資料皆不得為空值"
-            }), 400
-        
-        pwd_check = re.match(pwd_pattern, login_data["password"])
-        if len(login_data["password"])<4 or not pwd_check:
-            return jsonify({
-                "error": True,
-                "message": "Email或密碼輸入錯誤"
-            }), 400
-        
+            }), 400        
         try:
             mydb = Mydb()
             user_info = mydb.getUser(login_data["email"], login_data["password"])
         except Exception as e:
             return jsonify({
-                "error":True,
-                "message":f"伺服器內部錯誤:{e}"
+                "error": True,
+                "message": f"伺服器內部錯誤:{e}"
             }), 500
         
         if user_info:
@@ -111,4 +103,4 @@ def login():
 def logout():
     if session.get("user_info"):
         del session["user_info"]
-    return jsonify({"ok":True}), 200
+    return jsonify({"ok": True}), 200

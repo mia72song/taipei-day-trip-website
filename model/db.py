@@ -6,12 +6,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 db_info = {
-    "host":os.getenv("DB_HOST", default="localhost"),
-    "port":3306,
-    "user":os.getenv("DB_USER", default="root"),
-    "password":os.getenv("DB_PASSWORD"),
-    "database":os.getenv("DB_DATABASE"),
-    "charset":"utf8"
+    "host": os.getenv("DB_HOST", default="localhost"),
+    "port": 3306,
+    "user": os.getenv("DB_USER", default="root"),
+    "password": os.getenv("DB_PASSWORD"),
+    "database": os.getenv("DB_DATABASE"),
+    "charset": "utf8"
 }
 
 class Mydb:

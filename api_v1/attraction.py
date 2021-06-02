@@ -54,8 +54,8 @@ def get_attractions():
         except Exception as e:
             status_code = 500
             body = json.dumps({
-                "error":True,
-                "message":f"Server Error:{e}"
+                "error": True,
+                "message": f"Server Error:{e}"
             }, ensure_ascii=False, indent=2)
         
         resp = make_response(body, status_code) # body應為json格式
@@ -95,8 +95,8 @@ def get_attractions():
     except Exception as e:
         status_code = 500
         body = json.dumps({
-            "error":True,
-            "message":f"Server Error:{e}"
+            "error": True,
+            "message": f"Server Error:{e}"
         }, ensure_ascii=False, indent=2)
 
     resp = make_response(body, status_code)  # body應為json格式
@@ -112,19 +112,19 @@ def get_attraction(attractionid):
         result = mydb.getAttractionById(attractionid)
         if result:
             data_dict = attractionsFormatter(result)
-            body = json.dumps({"data":data_dict}, ensure_ascii=False, indent=2)
+            body = json.dumps({"data": data_dict}, ensure_ascii=False, indent=2)
             status_code = 200
         else:
             body = json.dumps({
-                "error":True,
-                "message":"Invalid Attraction Id"
+                "error": True,
+                "message": "Invalid Attraction Id"
             }, ensure_ascii=False, indent=2)            
             status_code = 400
     
     except Exception as e:
         body = json.dumps({
-            "error":True,
-            "message":f"Server Error：{e}"
+            "error": True,
+            "message": f"Server Error：{e}"
         }, ensure_ascii=False, indent=2)
         status_code = 500
     

@@ -1,4 +1,4 @@
-# taipei-day-trip-website - full stack development
+# taipei-day-trip-website
 
 網址：http://35.73.154.64:3000
 

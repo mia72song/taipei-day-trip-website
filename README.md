@@ -7,7 +7,7 @@ http://35.73.154.64:3000
 
 ## 測試會員資料：
 
-帳號：test@test
+帳號：test@test.com
 
 密碼：test
 

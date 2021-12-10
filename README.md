@@ -1,8 +1,6 @@
-# taipei-day-trip-website
+## taipei-day-trip-website
 
-## 網址：
-
-http://35.73.154.64:3000
+網址：http://35.73.154.64:3000
 
 
 ## 測試會員資料：

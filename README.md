@@ -29,12 +29,12 @@
 
 ## 使用技術
 
-前端：HTML5+CSS+JavaScript，React
+前端：HTML5+CSS+JavaScript，React框架
 
-後端：Python3，Flask
+後端：Python3，Flask框架，RESTful API
 
-金流串接：TapPay
+第三方金流串接：TapPay
 
-資料庫：MySQL
+關聯式資料庫：MySQL
 
 雲端服務器：AWS

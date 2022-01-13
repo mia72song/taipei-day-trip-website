@@ -3,8 +3,8 @@
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" type="text/css" href={{ url_for("static", filename="css/booking.css") }}>
+    <script src="https://js.tappaysdk.com/tpdirect/v5.8.0"></script>
     <script type="text/javascript" src={{ url_for("static", filename="js/booking.js") }}></script>
-    <script src="https://js.tappaysdk.com/tpdirect/v5.7.0"></script>
     <script type="text/javascript" src={{ url_for("static", filename="js/tappay.js") }}></script>
 {% endblock %}
 {% block content %}

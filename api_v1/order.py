@@ -33,7 +33,7 @@ def pay_by_prime(number, prime, amout, contact):
         "bank_transaction_id": str(number),
         "cardholder": {
             "phone_number": "+886"+contact["phone"][1:],
-            "name": contact["name"],
+            "name": contact["cardholder"],
             "email": contact["email"]
         },
         "remember": False
@@ -90,10 +90,13 @@ def create_order():
         number = str(uuid.uuid1().time)[4:]
         mydb = Mydb()
         try:
-            mydb.createOrder(number, order_data["prime"], order_data["price"], contact["name"], contact["email"], contact["phone"])
+            contact_name = contact.pop("name")
+            mydb.createOrder(number, order_data["prime"], order_data["price"], contact_name, contact["email"], contact["phone"])
             mydb.bookingToOrder(number, order_data["orders"])
+            # bug here
             number_for_success = pay_by_prime(number, order_data["prime"], order_data["price"], contact)
             if number_for_success:
+                print(number_for_success)
                 mydb.updatePaidOrder(number_for_success, order_data["orders"])
             else:
                 return jsonify({"error": True, "message": f"訂單編號：{number}，信用卡付款失敗，請洽客服"}), 400

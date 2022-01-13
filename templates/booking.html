@@ -16,7 +16,8 @@
             state={
                 name:"",
                 email:"",
-                phone:""
+                phone:"",
+                cardholder:""
             }
             componentDidMount(){
                 // 載入當前用戶的資料
@@ -78,6 +79,10 @@
                                 <br/>
                                 <label for="">驗證密碼：</label>
                                 <div class="tpfield" id="card-ccv"></div>
+                                <br/>
+                                <label for="">持卡人姓名：</label>
+                                <input type="text" name="cardholder" id="cardholder" placeholder="請輸入英文" pattern="^[A-Za-z\-]+\s+[A-Za-z\-]+$" required
+                                    value={this.state.cardholder} onChange={this.changeInputData("cardholder")}/>
                                 <h5>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</h5>
                             </div>
                         </div>
@@ -100,8 +105,8 @@
             }
             handleSubmit=()=>{
                 // 輸入資料格式驗證
-                const {name, email, phone}=this.state;
-                if(name==="" || email==="" || phone===""){
+                const {name, email, phone, cardholder}=this.state;
+                if(name==="" || email==="" || phone==="" || cardholder===""){
                     alert("聯絡資料未填寫");
                     return
                 }
@@ -140,7 +145,8 @@
                         contact:{
                             name:this.state.name,
                             email:this.state.email,
-                            phone:this.state.phone
+                            phone:this.state.phone,
+                            cardholder:this.state.cardholder
                         }
                     };
                     createOrder(data).then(resp=>{

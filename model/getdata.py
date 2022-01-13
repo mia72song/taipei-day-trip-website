@@ -1,5 +1,8 @@
 import json
-from .db import Mydb
+import sys
+sys.path.append("..")
+
+from model.db import Mydb
 
 with open("taipei-attractions.json", "r", encoding="utf-8") as f:
     data = json.load(f)

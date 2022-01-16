@@ -7,9 +7,10 @@ function requestUserData(method, data=null){
     };
     let p=fetch(url, {
         method,
-        credentials:"include",
         headers:{
-            "Content-Type":"application/json"
+            "Accept": "application/json", 
+            "Content-Type":"application/json", 
+            "Access-Control-Origin": "*"
         },
         body
     }).then(response=>{

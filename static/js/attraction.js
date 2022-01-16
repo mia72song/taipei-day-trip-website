@@ -19,7 +19,7 @@ function getAttractionById(){
 function createBooking(data){
     const url=`${window.origin}/api/booking`;
     let p=fetch(url, {
-        method:"post", 
+        method:"POST", 
         credentials: "include", 
         headers:{
             "Accept": "application/json", 

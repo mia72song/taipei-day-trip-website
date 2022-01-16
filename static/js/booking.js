@@ -15,7 +15,7 @@ function getBookingList(url=bookingApiUrl){
 
 function delBooking(dataObj, url=bookingApiUrl){
     let p=fetch(url, {
-        method:"delete",
+        method:"DELETE",
         credentials: "include", 
         headers:{
             "Accept": "application/json", 
@@ -37,7 +37,7 @@ function delBooking(dataObj, url=bookingApiUrl){
 function createOrder(dataObj){
     const url=`${window.origin}/api/orders`;
     let p=fetch(url, {
-        method:"post", 
+        method:"POST", 
         credentials: "include", 
         headers:{
             "Accept": "application/json", 

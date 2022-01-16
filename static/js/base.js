@@ -9,8 +9,7 @@ function requestUserData(method, data=null){
         method,
         headers:{
             "Accept": "application/json", 
-            "Content-Type":"application/json", 
-            "Access-Control-Origin": "*"
+            "Content-Type":"application/json"
         },
         body
     }).then(response=>{

@@ -18,8 +18,7 @@ function delBooking(dataObj, url=bookingApiUrl){
         method:"delete",
         headers:{
             "Accept": "application/json", 
-            "Content-Type":"application/json", 
-            "Access-Control-Origin": "*"
+            "Content-Type":"application/json"
         },
         body:JSON.stringify(dataObj)
     }).then(response=>{
@@ -40,8 +39,7 @@ function createOrder(dataObj){
         method:"post",
         headers:{
             "Accept": "application/json", 
-            "Content-Type":"application/json", 
-            "Access-Control-Origin": "*"
+            "Content-Type":"application/json"
         },
         body:JSON.stringify(dataObj)
     }).then(response=>{

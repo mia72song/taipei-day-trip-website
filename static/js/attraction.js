@@ -20,6 +20,7 @@ function createBooking(data){
     const url=`${window.origin}/api/booking`;
     let p=fetch(url, {
         method:"post", 
+        credentials: "include", 
         headers:{
             "Accept": "application/json", 
             "Content-Type":"application/json"

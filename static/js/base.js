@@ -7,6 +7,7 @@ function requestUserData(method, data=null){
     };
     let p=fetch(url, {
         method,
+        credentials: "include", 
         headers:{
             "Accept": "application/json", 
             "Content-Type":"application/json"

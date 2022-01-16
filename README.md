@@ -31,7 +31,7 @@
 
 ## 使用技術
 
-前端：HTML5+CSS+JavaScript，React框架
+前端：HTML5+CSS+JavaScript，React，fetch
 
 後端：Python爬蟲，Flask框架，RESTful API
 
@@ -40,3 +40,5 @@
 關聯式資料庫：MySQL
 
 雲端服務器：AWS
+
+生產環境配置：Nginx+uWSGI

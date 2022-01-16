@@ -47,7 +47,7 @@
         // 頁面載入時，取得當前已登入的使用者資訊
         let currentUserPromise;
         addEventListener("load", ()=>{
-            currentUserPromise=requestUserData("get").then(resp=>{
+            currentUserPromise=requestUserData("GET").then(resp=>{
                 // console.log("呼叫currentUserPromise");
                 if(resp.data){
                     const currentUser=resp.data;
@@ -151,7 +151,7 @@
                     return
                 }
                 const data={email, password};
-                requestUserData('patch', data).then(resp=>{
+                requestUserData('PATCH', data).then(resp=>{
                     if(resp.ok){
                         location.href=nextPathAfterLogin; // 由點擊的按紐判斷登入後跳轉的路徑
                     }else if(resp.error){
@@ -216,7 +216,7 @@
                     return
                 }
                 const data={name:username, email, password};
-                requestUserData("post", data).then(resp=>{
+                requestUserData("POST", data).then(resp=>{
                     if(resp.ok){
                         this.setState({message:"ok"});
                     }else if(resp.error){
